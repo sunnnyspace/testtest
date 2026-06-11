@@ -1,0 +1,1798 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>데이터사이언스 개론 인포그래픽</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Noto Sans KR',sans-serif;background:#0f1117;color:#e8e8f0;}
+  .slide{width:1200px;margin:0 auto 60px;background:#1a1d2e;border-radius:20px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.5);position:relative;}
+  .slide-header{padding:32px 48px 24px;display:flex;align-items:center;gap:16px;}
+  .slide-num{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:11px;flex-shrink:0;letter-spacing:-0.3px;line-height:1.2;text-align:center;}
+  .slide-title{font-size:26px;font-weight:700;letter-spacing:-0.5px;}
+  .slide-subtitle{font-size:13px;font-weight:300;opacity:0.6;margin-top:4px;}
+  .slide-body{padding:8px 48px 40px;}
+  .t1 .slide-header{background:linear-gradient(135deg,#1e3a5f,#0d2137);}
+  .t1 .slide-num{background:#4a9eff;color:#fff;}
+  .t2 .slide-header{background:linear-gradient(135deg,#2d1b4e,#1a0f30);}
+  .t2 .slide-num{background:#a855f7;color:#fff;}
+  .t3 .slide-header{background:linear-gradient(135deg,#1b3a2d,#0f2218);}
+  .t3 .slide-num{background:#22c55e;color:#fff;}
+  .t4 .slide-header{background:linear-gradient(135deg,#3a2d1b,#241c0f);}
+  .t4 .slide-num{background:#f59e0b;color:#fff;}
+  .t5 .slide-header{background:linear-gradient(135deg,#3a1b1b,#240f0f);}
+  .t5 .slide-num{background:#ef4444;color:#fff;}
+  .t6 .slide-header{background:linear-gradient(135deg,#1b2d3a,#0f1c24);}
+  .t6 .slide-num{background:#06b6d4;color:#fff;}
+  .t7 .slide-header{background:linear-gradient(135deg,#2d3a1b,#1c240f);}
+  .t7 .slide-num{background:#84cc16;color:#fff;}
+  .t8 .slide-header{background:linear-gradient(135deg,#3a1b2d,#240f1c);}
+  .t8 .slide-num{background:#ec4899;color:#fff;}
+  .t9 .slide-header{background:linear-gradient(135deg,#1b3a3a,#0f2424);}
+  .t9 .slide-num{background:#14b8a6;color:#fff;}
+  .t10 .slide-header{background:linear-gradient(135deg,#2d2d1b,#1c1c0f);}
+  .t10 .slide-num{background:#eab308;color:#fff;}
+  .t11 .slide-header{background:linear-gradient(135deg,#1b1b3a,#0f0f24);}
+  .t11 .slide-num{background:#6366f1;color:#fff;}
+  .t12 .slide-header{background:linear-gradient(135deg,#3a1b3a,#240f24);}
+  .t12 .slide-num{background:#d946ef;color:#fff;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:20px;}
+  .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-top:20px;}
+  .grid4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:14px;margin-top:20px;}
+  .card{background:#252840;border-radius:14px;padding:20px;}
+  .tag{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:0.5px;}
+  .badge{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;font-size:12px;font-weight:700;flex-shrink:0;}
+  /* 난이도 배지 */
+  .lv{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;margin-left:6px;vertical-align:middle;}
+  .lv-b{background:#1c3a0d;color:#86efac;} /* 초급 */
+  .lv-m{background:#3a2d00;color:#fde047;} /* 중급 */
+  .lv-a{background:#3a0d1b;color:#fca5a5;} /* 고급 */
+  .flow{display:flex;align-items:stretch;gap:0;margin-top:24px;}
+  .flow-step{flex:1;background:#252840;padding:18px 14px;position:relative;text-align:center;}
+  .flow-step:not(:last-child)::after{content:'▶';position:absolute;right:-12px;top:50%;transform:translateY(-50%);font-size:18px;color:#4a9eff;z-index:2;background:#1a1d2e;padding:2px;}
+  .flow-step-num{font-size:11px;font-weight:700;opacity:0.5;margin-bottom:6px;}
+  .flow-step-name{font-size:13px;font-weight:700;margin-bottom:6px;}
+  .flow-step-desc{font-size:11px;opacity:0.65;line-height:1.5;}
+  .timeline{position:relative;padding-left:30px;margin-top:20px;}
+  .timeline::before{content:'';position:absolute;left:10px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,#4a9eff,#a855f7,#22c55e,#f59e0b,#ef4444);}
+  .tl-item{position:relative;margin-bottom:20px;padding-left:24px;}
+  .tl-dot{position:absolute;left:-24px;top:4px;width:14px;height:14px;border-radius:50%;border:2px solid #fff;}
+  .tl-year{font-size:12px;font-weight:700;opacity:0.5;margin-bottom:3px;}
+  .tl-title{font-size:15px;font-weight:700;margin-bottom:4px;}
+  .tl-desc{font-size:12px;opacity:0.7;line-height:1.5;}
+  .stat-box{background:#252840;border-radius:14px;padding:20px;text-align:center;}
+  .stat-num{font-size:36px;font-weight:900;line-height:1;}
+  .stat-label{font-size:12px;opacity:0.6;margin-top:6px;}
+  .skill-bar{height:8px;border-radius:4px;margin-top:4px;background:#333;}
+  .skill-fill{height:100%;border-radius:4px;}
+  .code-box{background:#0d1117;border-radius:10px;padding:16px;font-family:'Courier New',monospace;font-size:12px;line-height:1.7;overflow-x:auto;}
+  .code-kw{color:#ff79c6;} .code-fn{color:#50fa7b;} .code-str{color:#f1fa8c;}
+  .code-cm{color:#6272a4;} .code-num{color:#bd93f9;} .code-var{color:#8be9fd;}
+  .theory-card{background:#252840;border-radius:14px;padding:18px;border-top:3px solid;}
+  .formula{background:#0d1117;border-radius:8px;padding:10px 14px;font-family:'Courier New',monospace;font-size:13px;color:#a0d8ff;margin:8px 0;}
+  .icon-item{display:flex;align-items:flex-start;gap:12px;padding:12px;background:#252840;border-radius:12px;}
+  .icon-circle{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+  .section-label{font-size:11px;font-weight:700;letter-spacing:2px;opacity:0.5;text-transform:uppercase;margin-bottom:12px;margin-top:24px;}
+  p.desc{font-size:13px;line-height:1.7;opacity:0.8;}
+  .abbr-note{font-size:10px;opacity:0.45;margin-top:2px;font-weight:400;}
+  /* 개념 카드 (6·7·8장용) */
+  .concept-card{background:#252840;border-radius:14px;padding:18px;border-left:4px solid;margin-bottom:14px;}
+  .concept-card .easy{background:#0d1117;border-radius:8px;padding:9px 12px;font-size:12px;color:#a0d8ff;margin:8px 0;line-height:1.6;}
+  .concept-card .when{font-size:11px;opacity:0.65;line-height:1.6;margin-top:6px;}
+  .concept-card .formula2{font-family:'Courier New',monospace;font-size:12px;color:#fde047;background:#1a1a00;border-radius:6px;padding:6px 10px;margin:6px 0;display:block;}
+  /* 에이전트 슬라이드 */
+  .role-card{background:#252840;border-radius:12px;padding:16px;border-top:3px solid;}
+  /* 공간데이터 */
+  .geo-step{background:#252840;border-radius:10px;padding:14px;border-left:3px solid #22c55e;margin-bottom:8px;}
+  .pg-num{position:absolute;bottom:14px;right:22px;font-size:10px;font-weight:700;opacity:0.22;letter-spacing:0.5px;pointer-events:none;}
+  .pg-num{position:absolute;bottom:14px;right:22px;font-size:10px;font-weight:700;opacity:0.22;letter-spacing:0.5px;pointer-events:none;}
+  @media(max-width:1250px){.slide{width:100%;}}
+</style>
+</head>
+<body>
+
+<!-- ========== SLIDE 1-1: 전체 개요 ========== -->
+<div class="slide t1">
+  <div class="slide-header">
+    <div class="slide-num">1-1</div>
+    <div>
+      <div class="slide-title">데이터사이언스란 무엇인가? — 전체 개요 및 프로세스</div>
+      <div class="slide-subtitle">Data Science Overview &amp; Full Pipeline</div>
+    </div>
+  </div>
+  <div class="slide-body">
+    <div style="display:flex;gap:32px;align-items:flex-start;margin-top:16px;">
+      <div style="flex:0 0 340px;">
+        <div class="section-label">데이터사이언스의 정의</div>
+        <svg width="320" height="240" viewBox="0 0 320 240">
+          <ellipse cx="130" cy="110" rx="100" ry="80" fill="#4a9eff" fill-opacity="0.25" stroke="#4a9eff" stroke-width="2"/>
+          <ellipse cx="190" cy="110" rx="100" ry="80" fill="#a855f7" fill-opacity="0.25" stroke="#a855f7" stroke-width="2"/>
+          <ellipse cx="160" cy="165" rx="100" ry="70" fill="#22c55e" fill-opacity="0.25" stroke="#22c55e" stroke-width="2"/>
+          <text x="95" y="88" text-anchor="middle" fill="#7ec8ff" font-size="13" font-weight="700">통계학</text>
+          <text x="95" y="104" text-anchor="middle" fill="#7ec8ff" font-size="11">Statistics</text>
+          <text x="225" y="88" text-anchor="middle" fill="#c084fc" font-size="13" font-weight="700">컴퓨터과학</text>
+          <text x="225" y="104" text-anchor="middle" fill="#c084fc" font-size="11">Computer Sci.</text>
+          <text x="160" y="200" text-anchor="middle" fill="#86efac" font-size="13" font-weight="700">도메인 지식</text>
+          <text x="160" y="216" text-anchor="middle" fill="#86efac" font-size="11">Domain Knowledge</text>
+          <text x="160" y="126" text-anchor="middle" fill="#fff" font-size="14" font-weight="900">DATA</text>
+          <text x="160" y="142" text-anchor="middle" fill="#fff" font-size="14" font-weight="900">SCIENCE</text>
+        </svg>
+        <p class="desc" style="margin-top:8px;">데이터사이언스는 <b style="color:#4a9eff;">통계학</b>, <b style="color:#a855f7;">컴퓨터과학</b>, <b style="color:#22c55e;">도메인 지식</b>이 교차하는 학문으로, 데이터에서 의미있는 인사이트를 추출하는 모든 과정을 다룹니다.</p>
+      </div>
+      <div style="flex:1;">
+        <div class="section-label">핵심 역량 영역</div>
+        <div class="grid3">
+          <div class="card" style="border-top:3px solid #4a9eff;">
+            <div style="font-size:13px;font-weight:700;color:#4a9eff;margin-bottom:6px;">수학·통계</div>
+            <div style="font-size:11px;opacity:0.7;line-height:1.6;">확률론, 선형대수,<br>회귀분석, 가설검정,<br>베이즈 통계</div>
+          </div>
+          <div class="card" style="border-top:3px solid #a855f7;">
+            <div style="font-size:13px;font-weight:700;color:#a855f7;margin-bottom:6px;">프로그래밍</div>
+            <div style="font-size:11px;opacity:0.7;line-height:1.6;">Python, R, SQL,<br>데이터 수집·처리,<br>자동화</div>
+          </div>
+          <div class="card" style="border-top:3px solid #22c55e;">
+            <div style="font-size:13px;font-weight:700;color:#22c55e;margin-bottom:6px;">도메인 이해</div>
+            <div style="font-size:11px;opacity:0.7;line-height:1.6;">문제 정의, 비즈니스<br>맥락, 사회적 함의,<br>윤리적 판단</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="section-label" style="margin-top:28px;">데이터사이언스 전체 프로세스</div>
+    <div style="font-size:11px;opacity:0.45;margin-bottom:10px;">CRISP-DM 기반 — Cross-Industry Standard Process for Data Mining (산업 공통 데이터마이닝 표준 프로세스)</div>
+    <div class="flow">
+      <div class="flow-step" style="border-top:3px solid #4a9eff;">
+        <div class="flow-step-num">STEP 01</div>
+        <div class="flow-step-name">문제 정의</div>
+        <div style="font-size:10px;color:#4a9eff;opacity:0.8;margin-bottom:4px;">Business Understanding</div>
+        <div class="flow-step-desc">비즈니스/사회 문제를 데이터 문제로 변환</div>
+      </div>
+      <div class="flow-step" style="border-top:3px solid #a855f7;">
+        <div class="flow-step-num">STEP 02</div>
+        <div class="flow-step-name">데이터 수집</div>
+        <div style="font-size:10px;color:#a855f7;opacity:0.8;margin-bottom:4px;">Data Understanding</div>
+        <div class="flow-step-desc">설문, 크롤링, API, 공공데이터 등</div>
+      </div>
+      <div class="flow-step" style="border-top:3px solid #22c55e;">
+        <div class="flow-step-num">STEP 03</div>
+        <div class="flow-step-name">전처리·정제</div>
+        <div style="font-size:10px;color:#22c55e;opacity:0.8;margin-bottom:4px;">Data Preparation</div>
+        <div class="flow-step-desc">결측값, 이상치, 인코딩, 정규화</div>
+      </div>
+      <div class="flow-step" style="border-top:3px solid #f59e0b;">
+        <div class="flow-step-num">STEP 04</div>
+        <div class="flow-step-name">탐색적 분석</div>
+        <div style="font-size:10px;color:#f59e0b;opacity:0.8;margin-bottom:4px;">Data Understanding +</div>
+        <div class="flow-step-desc">EDA (Exploratory Data Analysis), 패턴 발견, 시각화</div>
+      </div>
+      <div class="flow-step" style="border-top:3px solid #ef4444;">
+        <div class="flow-step-num">STEP 05</div>
+        <div class="flow-step-name">모델링</div>
+        <div style="font-size:10px;color:#ef4444;opacity:0.8;margin-bottom:4px;">Modeling</div>
+        <div class="flow-step-desc">통계·ML 모델 구축 및 학습</div>
+      </div>
+      <div class="flow-step" style="border-top:3px solid #06b6d4;">
+        <div class="flow-step-num">STEP 06</div>
+        <div class="flow-step-name">검증·평가</div>
+        <div style="font-size:10px;color:#06b6d4;opacity:0.8;margin-bottom:4px;">Evaluation</div>
+        <div class="flow-step-desc">성능 측정, 교차검증, 해석</div>
+      </div>
+      <div class="flow-step" style="border-top:3px solid #ec4899;">
+        <div class="flow-step-num">STEP 07</div>
+        <div class="flow-step-name">커뮤니케이션</div>
+        <div style="font-size:10px;color:#ec4899;opacity:0.8;margin-bottom:4px;">Deployment</div>
+        <div class="flow-step-desc">시각화, 보고서, 스토리텔링</div>
+      </div>
+    </div>
+    <div style="margin-top:12px;padding:12px 16px;background:#0d1a2e;border-radius:10px;border-left:3px solid #4a9eff44;display:flex;gap:24px;flex-wrap:wrap;">
+      <div style="font-size:11px;opacity:0.75;line-height:1.8;">
+        <span style="color:#4a9eff;font-weight:700;">역사 ·</span> 1996년 유럽 컨소시엄(Daimler, SPSS 등)이 공동 개발
+      </div>
+      <div style="font-size:11px;opacity:0.75;line-height:1.8;">
+        <span style="color:#4a9eff;font-weight:700;">현재 ·</span> 데이터 분석 현장에서 가장 널리 쓰이는 표준 방법론
+      </div>
+      <div style="font-size:11px;opacity:0.75;line-height:1.8;">
+        <span style="color:#4a9eff;font-weight:700;">특징 ·</span> 순환 구조 — 모델링 결과를 보고 데이터 준비 단계로 돌아가 반복적으로 개선
+      </div>
+    </div>
+    <div class="grid4" style="margin-top:24px;">
+      <div class="stat-box"><div class="stat-num" style="color:#4a9eff;">90%</div><div class="stat-label">데이터사이언스 시간 중<br>데이터 수집·전처리 비중</div></div>
+      <div class="stat-box"><div class="stat-num" style="color:#a855f7;">4V</div><div class="stat-label">빅데이터 특성<br>Volume·Variety·Velocity·Veracity</div></div>
+      <div class="stat-box"><div class="stat-num" style="color:#22c55e;">CRISP<br>-DM</div><div class="stat-label">가장 널리 쓰이는<br>데이터마이닝 방법론</div></div>
+      <div class="stat-box"><div class="stat-num" style="color:#f59e0b;">반복</div><div class="stat-label">각 단계는 선형이 아닌<br>순환·반복 구조</div></div>
+    </div>
+  </div>
+
+  <div class="pg-num">1 / 20</div>
+</div>
+
+<!-- ========== SLIDE 1-2: 비판적 사고 & 컴퓨팅 사고 ========== -->
+<div class="slide t1">
+  <div class="slide-header">
+    <div class="slide-num">1-2</div>
+    <div>
+      <div class="slide-title">비판적 사고 & 컴퓨팅 사고 — 데이터사이언스의 사고 기반</div>
+      <div class="slide-subtitle">Critical Thinking &amp; Computational Thinking — "무엇을 분석할지 아는 것이 어떻게 분석하는지보다 중요하다"</div>
+    </div>
+  </div>
+  <div class="slide-body">
+    <div class="grid2" style="margin-top:16px;">
+
+      <!-- 비판적 사고 -->
+      <div>
+        <div class="section-label">비판적 사고 (Critical Thinking)</div>
+        <div class="concept-card" style="border-left-color:#4a9eff;">
+          <div style="font-size:13px;font-weight:700;color:#4a9eff;margin-bottom:6px;">정의</div>
+          <div class="easy">단순히 정보를 받아들이지 않고, 근거·논리·맥락을 따져 <b>스스로 판단하는 능력</b>. 데이터사이언스에서는 "이 데이터가 정말 신뢰할 수 있는가?", "모델 결과가 현실을 반영하는가?"를 끊임없이 질문하는 태도.</div>
+        </div>
+
+        <div class="section-label" style="margin-top:14px;">Paul-Elder 비판적 사고 프레임워크 (8요소)</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px;">
+          <div style="padding:8px 10px;background:#0d2137;border-radius:8px;border-left:3px solid #4a9eff;">
+            <div style="font-size:11px;font-weight:700;color:#60a5fa;">목적 (Purpose)</div>
+            <div style="font-size:10px;opacity:0.7;margin-top:2px;">분석의 목표가 무엇인가?</div>
+          </div>
+          <div style="padding:8px 10px;background:#0d2137;border-radius:8px;border-left:3px solid #4a9eff;">
+            <div style="font-size:11px;font-weight:700;color:#60a5fa;">질문 (Question)</div>
+            <div style="font-size:10px;opacity:0.7;margin-top:2px;">풀어야 할 문제는 정확히 무엇인가?</div>
+          </div>
+          <div style="padding:8px 10px;background:#0d2137;border-radius:8px;border-left:3px solid #4a9eff;">
+            <div style="font-size:11px;font-weight:700;color:#60a5fa;">정보 (Information)</div>
+            <div style="font-size:10px;opacity:0.7;margin-top:2px;">데이터는 어디서 왔고 얼마나 신뢰할 수 있나?</div>
+          </div>
+          <div style="padding:8px 10px;background:#0d2137;border-radius:8px;border-left:3px solid #4a9eff;">
+            <div style="font-size:11px;font-weight:700;color:#60a5fa;">추론 (Inference)</div>
+            <div style="font-size:10px;opacity:0.7;margin-top:2px;">결론이 데이터에서 논리적으로 도출되는가?</div>
+          </div>
+          <div style="padding:8px 10px;background:#0d2137;border-radius:8px;border-left:3px solid #4a9eff;">
+            <div style="font-size:11px;font-weight:700;color:#60a5fa;">가정 (Assumption)</div>
+            <div style="font-size:10px;opacity:0.7;margin-top:2px;">분석에 숨어있는 전제는 무엇인가?</div>
+          </div>
+          <div style="padding:8px 10px;background:#0d2137;border-radius:8px;border-left:3px solid #4a9eff;">
+            <div style="font-size:11px;font-weight:700;color:#60a5fa;">관점 (Point of View)</div>
+            <div style="font-size:10px;opacity:0.7;margin-top:2px;">다른 해석 가능성은 없는가?</div>
+          </div>
+          <div style="padding:8px 10px;background:#0d2137;border-radius:8px;border-left:3px solid #4a9eff;">
+            <div style="font-size:11px;font-weight:700;color:#60a5fa;">개념 (Concept)</div>
+            <div style="font-size:10px;opacity:0.7;margin-top:2px;">핵심 개념·용어가 명확하게 정의되었는가?</div>
+          </div>
+          <div style="padding:8px 10px;background:#0d2137;border-radius:8px;border-left:3px solid #4a9eff;">
+            <div style="font-size:11px;font-weight:700;color:#60a5fa;">함의 (Implication)</div>
+            <div style="font-size:10px;opacity:0.7;margin-top:2px;">이 결과가 현실에 어떤 영향을 미치나?</div>
+          </div>
+        </div>
+
+        <div class="concept-card" style="border-left-color:#60a5fa;margin-top:12px;">
+          <div style="font-size:12px;font-weight:700;color:#60a5fa;margin-bottom:5px;">데이터사이언스에서의 가치 & 고려사항</div>
+          <div style="font-size:11px;opacity:0.8;line-height:1.7;">
+            · AI·LLM 결과를 무비판적으로 수용하지 않는 <b style="color:#93c5fd;">검증 습관</b><br>
+            · 상관관계를 인과관계로 혼동하지 않는 <b style="color:#93c5fd;">논리적 엄밀성</b><br>
+            · 데이터 수집·분석 과정의 <b style="color:#93c5fd;">편향(Bias) 인식</b><br>
+            · 인문사회 배경 지식을 활용한 <b style="color:#93c5fd;">맥락 해석</b>이 기술 역량보다 중요할 수 있음
+          </div>
+        </div>
+      </div>
+
+      <!-- 컴퓨팅 사고 -->
+      <div>
+        <div class="section-label">컴퓨팅 사고 (Computational Thinking)</div>
+        <div class="concept-card" style="border-left-color:#a855f7;">
+          <div style="font-size:13px;font-weight:700;color:#a855f7;margin-bottom:6px;">정의 (Jeannette Wing, 2006)</div>
+          <div class="easy">컴퓨터처럼 코딩하는 것이 아니라, <b>복잡한 문제를 컴퓨터가 처리할 수 있는 방식으로 재구성하는 사고 능력</b>. 프로그래밍과 무관하게 누구나 훈련할 수 있는 범용 문제 해결 능력.</div>
+        </div>
+
+        <div class="section-label" style="margin-top:14px;">4대 핵심 요소</div>
+        <div style="display:flex;flex-direction:column;gap:7px;margin-top:8px;">
+          <div style="padding:10px 14px;background:#1a0f30;border-radius:10px;border-left:4px solid #a855f7;display:flex;gap:12px;align-items:flex-start;">
+            <div style="min-width:28px;height:28px;border-radius:50%;background:#a855f7;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:#fff;flex-shrink:0;">D</div>
+            <div>
+              <div style="font-size:12px;font-weight:700;color:#c084fc;">분해 (Decomposition)</div>
+              <div style="font-size:11px;opacity:0.75;margin-top:2px;line-height:1.5;">큰 문제를 작고 다루기 쉬운 하위 문제로 쪼갠다. 예: "고객 이탈 예측" → 데이터 수집 / 특성 정의 / 모델 선택 / 평가 분리</div>
+            </div>
+          </div>
+          <div style="padding:10px 14px;background:#1a0f30;border-radius:10px;border-left:4px solid #7c3aed;display:flex;gap:12px;align-items:flex-start;">
+            <div style="min-width:28px;height:28px;border-radius:50%;background:#7c3aed;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:#fff;flex-shrink:0;">P</div>
+            <div>
+              <div style="font-size:12px;font-weight:700;color:#a78bfa;">패턴 인식 (Pattern Recognition)</div>
+              <div style="font-size:11px;opacity:0.75;margin-top:2px;line-height:1.5;">유사한 문제 구조나 반복 패턴을 발견한다. 과거 분석 경험을 새로운 문제에 적용. EDA에서 패턴·이상값 탐지가 핵심.</div>
+            </div>
+          </div>
+          <div style="padding:10px 14px;background:#1a0f30;border-radius:10px;border-left:4px solid #6d28d9;display:flex;gap:12px;align-items:flex-start;">
+            <div style="min-width:28px;height:28px;border-radius:50%;background:#6d28d9;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:#fff;flex-shrink:0;">A</div>
+            <div>
+              <div style="font-size:12px;font-weight:700;color:#8b5cf6;">추상화 (Abstraction)</div>
+              <div style="font-size:11px;opacity:0.75;margin-top:2px;line-height:1.5;">핵심 요소만 남기고 불필요한 세부사항을 제거한다. 모델이 현실을 단순화하는 것 자체가 추상화. 변수 선택·특성공학의 본질.</div>
+            </div>
+          </div>
+          <div style="padding:10px 14px;background:#1a0f30;border-radius:10px;border-left:4px solid #5b21b6;display:flex;gap:12px;align-items:flex-start;">
+            <div style="min-width:28px;height:28px;border-radius:50%;background:#5b21b6;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:#fff;flex-shrink:0;">Al</div>
+            <div>
+              <div style="font-size:12px;font-weight:700;color:#7c3aed;">알고리즘 설계 (Algorithm Design)</div>
+              <div style="font-size:11px;opacity:0.75;margin-top:2px;line-height:1.5;">문제를 해결하는 단계별 절차를 설계한다. 코드가 아닌 <b>분석 로직의 흐름</b>을 먼저 설계하는 습관. 가설 → 검증 → 결론.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 문제 정의 보조 이론/방법 -->
+    <div class="section-label" style="margin-top:24px;">문제 정의를 돕는 주요 방법론</div>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:10px;">
+      <div class="card" style="border-top:3px solid #f59e0b;padding:13px;">
+        <div style="font-size:11px;font-weight:700;color:#f59e0b;margin-bottom:5px;">디자인 씽킹<br><span style="font-weight:400;font-size:10px;opacity:0.7;">Design Thinking</span></div>
+        <div style="font-size:10px;opacity:0.75;line-height:1.6;">공감→정의→아이디어→프로토타입→테스트. IDEO 제안. <b>사용자 중심</b>으로 문제를 재정의.</div>
+      </div>
+      <div class="card" style="border-top:3px solid #ef4444;padding:13px;">
+        <div style="font-size:11px;font-weight:700;color:#ef4444;margin-bottom:5px;">5 Whys<br><span style="font-weight:400;font-size:10px;opacity:0.7;">도요타 근본원인 분석</span></div>
+        <div style="font-size:10px;opacity:0.75;line-height:1.6;">"왜?"를 5번 반복해 표면 문제 뒤의 <b>근본 원인</b>을 찾는다. 간단하지만 강력한 문제 구조화 도구.</div>
+      </div>
+      <div class="card" style="border-top:3px solid #22c55e;padding:13px;">
+        <div style="font-size:11px;font-weight:700;color:#22c55e;margin-bottom:5px;">SMART 목표<br><span style="font-weight:400;font-size:10px;opacity:0.7;">목표 명확화</span></div>
+        <div style="font-size:10px;opacity:0.75;line-height:1.6;"><b>S</b>pecific·<b>M</b>easurable·<b>A</b>chievable·<b>R</b>elevant·<b>T</b>ime-bound. 분석 목표를 측정 가능하게 구체화.</div>
+      </div>
+      <div class="card" style="border-top:3px solid #06b6d4;padding:13px;">
+        <div style="font-size:11px;font-weight:700;color:#06b6d4;margin-bottom:5px;">피시본 다이어그램<br><span style="font-weight:400;font-size:10px;opacity:0.7;">Fishbone / 이시카와</span></div>
+        <div style="font-size:10px;opacity:0.75;line-height:1.6;">결과(문제)에 영향을 미치는 원인을 사람·방법·환경·측정 등 범주로 시각화. 변수 탐색에 활용.</div>
+      </div>
+      <div class="card" style="border-top:3px solid #a855f7;padding:13px;">
+        <div style="font-size:11px;font-weight:700;color:#a855f7;margin-bottom:5px;">HMW 질문법<br><span style="font-weight:400;font-size:10px;opacity:0.7;">How Might We</span></div>
+        <div style="font-size:10px;opacity:0.75;line-height:1.6;">"어떻게 하면 우리가 ~할 수 있을까?" 형식으로 문제를 기회로 전환. 가설 생성과 분석 방향 설정에 유용.</div>
+      </div>
+    </div>
+    <div style="margin-top:10px;padding:10px 14px;background:#1a1a00;border-radius:8px;border-left:3px solid #fde04766;">
+      <div style="font-size:11px;color:#fde047;opacity:0.9;line-height:1.7;"><b>핵심 인사이트:</b> 비판적 사고는 <b>"이 질문이 옳은가"</b>를 판단하고, 컴퓨팅 사고는 <b>"어떻게 풀 것인가"</b>를 설계한다. 두 사고가 결합될 때 데이터사이언티스트는 AI 도구를 효과적으로 활용하면서도 결과를 주체적으로 해석할 수 있다.</div>
+    </div>
+  </div>
+
+  <div class="pg-num">2 / 20</div>
+</div>
+
+<!-- ========== SLIDE 1-3: 시대적 흐름 ========== -->
+<div class="slide t2">
+  <div class="slide-header">
+    <div class="slide-num">1-3</div>
+    <div>
+      <div class="slide-title">데이터사이언스의 시대적 흐름</div>
+      <div class="slide-subtitle">Historical Evolution of Data Science</div>
+    </div>
+  </div>
+  <div class="slide-body">
+    <div style="display:flex;gap:32px;margin-top:16px;">
+      <div style="flex:1;">
+        <div class="section-label">연대기적 발전</div>
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-dot" style="background:#6b7280;border-color:#9ca3af;"></div>
+            <div class="tl-year">1960s–1970s</div>
+            <div class="tl-title">통계학의 디지털화</div>
+            <div class="tl-desc">대형 컴퓨터 등장, SAS·SPSS 개발. 전통 통계 분석이 컴퓨터로 이전.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:#3b82f6;border-color:#60a5fa;"></div>
+            <div class="tl-year">1980s–1990s</div>
+            <div class="tl-title">데이터베이스 & 데이터마이닝</div>
+            <div class="tl-desc">관계형 DB(SQL), 데이터웨어하우스, KDD(Knowledge Discovery in Databases — 데이터베이스 내 지식 발견) 개념 등장. 의사결정나무, 연관규칙 알고리즘 개발.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:#a855f7;border-color:#c084fc;"></div>
+            <div class="tl-year">2000s</div>
+            <div class="tl-title">빅데이터 시대 개막</div>
+            <div class="tl-desc">웹 2.0, Google·Amazon·Facebook 등장. Hadoop·MapReduce로 분산처리 시작. "Data Scientist" 직함 등장(DJ Patil, 2008).</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:#22c55e;border-color:#4ade80;"></div>
+            <div class="tl-year">2010s</div>
+            <div class="tl-title">머신러닝 & 클라우드 폭발</div>
+            <div class="tl-desc">딥러닝 혁명(AlexNet 2012), AWS·Azure·GCP 확산, Spark·Kafka 등 실시간 처리. Python/R이 표준 언어로 자리잡음.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:#f59e0b;border-color:#fbbf24;"></div>
+            <div class="tl-year">2020s</div>
+            <div class="tl-title">AI·LLM & AutoML 시대</div>
+            <div class="tl-desc">GPT-3/4, BERT 등 대규모 언어모델. AutoML·MLOps 표준화. AI 윤리·편향·규제 논의 본격화.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot" style="background:#ef4444;border-color:#f87171;"></div>
+            <div class="tl-year">2024–현재</div>
+            <div class="tl-title">Agentic AI & 바이브코딩</div>
+            <div class="tl-desc">AI 에이전트가 분석 파이프라인 자동 수행. 자연어로 코드 생성(바이브코딩). AI Scientist 개념 등장.</div>
+          </div>
+        </div>
+      </div>
+      <div style="flex:1;">
+        <div class="section-label">패러다임 변화</div>
+        <div style="display:flex;flex-direction:column;gap:14px;margin-top:4px;">
+          <div class="card" style="border-left:4px solid #6b7280;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+              <span style="font-weight:700;font-size:13px;">전통 통계 분석</span>
+              <span class="tag" style="background:#374151;color:#9ca3af;">~2000s</span>
+            </div>
+            <div style="font-size:12px;opacity:0.7;">소규모 구조화 데이터 → 가설 검정 → 해석 중심 → 전문 통계학자</div>
+          </div>
+          <div style="text-align:center;font-size:20px;opacity:0.4;">↓</div>
+          <div class="card" style="border-left:4px solid #3b82f6;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+              <span style="font-weight:700;font-size:13px;">데이터마이닝 & BI</span>
+              <span class="tag" style="background:#1e3a5f;color:#60a5fa;">2000s</span>
+            </div>
+            <div style="font-size:12px;opacity:0.7;">대용량 DB → 패턴 발견 → 비즈니스 인텔리전스(Business Intelligence) → 분석가</div>
+          </div>
+          <div style="text-align:center;font-size:20px;opacity:0.4;">↓</div>
+          <div class="card" style="border-left:4px solid #a855f7;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+              <span style="font-weight:700;font-size:13px;">빅데이터 & 머신러닝</span>
+              <span class="tag" style="background:#2d1b4e;color:#c084fc;">2010s</span>
+            </div>
+            <div style="font-size:12px;opacity:0.7;">비정형 대용량 → 예측 모델 → 자동화 → 데이터사이언티스트</div>
+          </div>
+          <div style="text-align:center;font-size:20px;opacity:0.4;">↓</div>
+          <div class="card" style="border-left:4px solid #22c55e;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+              <span style="font-weight:700;font-size:13px;">AI·LLM 협업 분석</span>
+              <span class="tag" style="background:#1b3a2d;color:#4ade80;">2020s~</span>
+            </div>
+            <div style="font-size:12px;opacity:0.7;">멀티모달 → 생성형 AI 보조 → 민주화 → 도메인 전문가 + AI</div>
+          </div>
+        </div>
+        <div class="section-label" style="margin-top:24px;">핵심 동인</div>
+        <div class="grid3" style="margin-top:8px;">
+          <div class="card" style="text-align:center;padding:14px;">
+            <div style="font-size:12px;font-weight:700;margin-top:6px;">저장비용 감소</div>
+            <div style="font-size:11px;opacity:0.6;margin-top:4px;">클라우드 스토리지<br>1GB당 비용 99% 감소</div>
+          </div>
+          <div class="card" style="text-align:center;padding:14px;">
+            <div style="font-size:12px;font-weight:700;margin-top:6px;">연산능력 폭발</div>
+            <div style="font-size:11px;opacity:0.6;margin-top:4px;">GPU·TPU 등장<br>딥러닝 학습 가능화</div>
+          </div>
+          <div class="card" style="text-align:center;padding:14px;">
+            <div style="font-size:12px;font-weight:700;margin-top:6px;">데이터 폭증</div>
+            <div style="font-size:11px;opacity:0.6;margin-top:4px;">SNS, IoT, 모바일<br>매일 2.5엑사바이트</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pg-num">3 / 20</div>
+</div>
+
+<!-- ========== SLIDE 2-1: 데이터 수집 ========== -->
+<div class="slide t3">
+  <div class="slide-header">
+    <div class="slide-num">2-1</div>
+    <div>
+      <div class="slide-title">STEP 1–2 | 문제 정의 & 데이터 수집</div>
+      <div class="slide-subtitle">Problem Definition &amp; Data Collection</div>
+    </div>
+  </div>
+  <div class="slide-body">
+    <div class="grid2" style="margin-top:16px;">
+      <div>
+        <div class="section-label">문제 정의 프레임워크</div>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:8px;">
+          <div class="icon-item">
+            <div class="icon-circle" style="background:#1b3a2d;">W</div>
+            <div><div style="font-size:13px;font-weight:700;margin-bottom:4px;">What: 무엇을 알고 싶은가?</div><div style="font-size:11px;opacity:0.7;">분석 목표를 명확한 질문으로 변환 — "매출이 왜 떨어졌나?" → "어떤 변수가 이탈률과 상관있나?"</div></div>
+          </div>
+          <div class="icon-item">
+            <div class="icon-circle" style="background:#1b3a2d;">M</div>
+            <div><div style="font-size:13px;font-weight:700;margin-bottom:4px;">Measure: 어떻게 측정할 것인가?</div><div style="font-size:11px;opacity:0.7;">KPI(Key Performance Indicator, 핵심성과지표) 및 성공 지표 정의. 정량·정성 측정 방법 결정.</div></div>
+          </div>
+          <div class="icon-item">
+            <div class="icon-circle" style="background:#1b3a2d;">D</div>
+            <div><div style="font-size:13px;font-weight:700;margin-bottom:4px;">Data: 어떤 데이터가 필요한가?</div><div style="font-size:11px;opacity:0.7;">필요 변수, 수집 가능성, 데이터 출처, 윤리·개인정보 검토.</div></div>
+          </div>
+          <div class="icon-item">
+            <div class="icon-circle" style="background:#1b3a2d;">A</div>
+            <div><div style="font-size:13px;font-weight:700;margin-bottom:4px;">Action: 결과로 무엇을 할 것인가?</div><div style="font-size:11px;opacity:0.7;">의사결정 시나리오 사전 정의. 분석 결과의 활용 방안 설계.</div></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="section-label">데이터 수집 방법 & 유형</div>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:8px;">
+          <div class="card" style="border-left:4px solid #22c55e;">
+            <div style="font-size:13px;font-weight:700;color:#22c55e;margin-bottom:6px;">공공데이터 & 오픈데이터</div>
+            <div style="font-size:11px;opacity:0.7;line-height:1.6;">공공데이터포털(data.go.kr), 통계청 KOSIS, 국회 법률정보, World Bank, UN Data, Google Dataset Search</div>
+          </div>
+          <div class="card" style="border-left:4px solid #4a9eff;">
+            <div style="font-size:13px;font-weight:700;color:#4a9eff;margin-bottom:6px;">웹 크롤링 & API</div>
+            <div style="font-size:11px;opacity:0.7;line-height:1.6;">BeautifulSoup, Scrapy로 웹 수집. Twitter/X API, Naver API, 공공API 활용. robots.txt 준수 필수.</div>
+          </div>
+          <div class="card" style="border-left:4px solid #f59e0b;">
+            <div style="font-size:13px;font-weight:700;color:#f59e0b;margin-bottom:6px;">설문 & 실험 설계</div>
+            <div style="font-size:11px;opacity:0.7;line-height:1.6;">Google Forms, 표본 추출 방법(단순무작위/층화/군집), 표본 크기 계산, 편향 통제.</div>
+          </div>
+          <div class="card" style="border-left:4px solid #a855f7;">
+            <div style="font-size:13px;font-weight:700;color:#a855f7;margin-bottom:6px;">내부 데이터 & 로그</div>
+            <div style="font-size:11px;opacity:0.7;line-height:1.6;">CRM·ERP DB, 웹로그, 앱 사용 데이터, IoT 센서, 거래 기록.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="section-label" style="margin-top:24px;">데이터 유형 분류</div>
+    <div class="grid4">
+      <div class="card" style="border-top:3px solid #22c55e;">
+        <div style="font-size:11px;font-weight:700;color:#22c55e;margin-bottom:8px;">정형 데이터</div>
+        <div style="font-size:11px;opacity:0.7;line-height:1.6;">행·열로 구조화<br>Excel, CSV, DB 테이블<br>SQL로 처리</div>
+      </div>
+      <div class="card" style="border-top:3px solid #f59e0b;">
+        <div style="font-size:11px;font-weight:700;color:#f59e0b;margin-bottom:8px;">반정형 데이터</div>
+        <div style="font-size:11px;opacity:0.7;line-height:1.6;">일부 구조 존재<br>JSON, XML, HTML<br>로그 파일</div>
+      </div>
+      <div class="card" style="border-top:3px solid #ef4444;">
+        <div style="font-size:11px;font-weight:700;color:#ef4444;margin-bottom:8px;">비정형 데이터</div>
+        <div style="font-size:11px;opacity:0.7;line-height:1.6;">자유 형식<br>텍스트, 이미지, 음성<br>NLP·딥러닝 필요</div>
+      </div>
+      <div class="card" style="border-top:3px solid #a855f7;">
+        <div style="font-size:11px;font-weight:700;color:#a855f7;margin-bottom:8px;">시계열 데이터</div>
+        <div style="font-size:11px;opacity:0.7;line-height:1.6;">시간 순서 구조<br>주가, 기상, 센서<br>트렌드·계절성 분석</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pg-num">4 / 20</div>
+</div>
+
+<!-- ========== SLIDE 2-2: 전처리 ========== -->
+<div class="slide t4">
+  <div class="slide-header">
+    <div class="slide-num">2-2</div>
+    <div>
+      <div class="slide-title">STEP 3 | 데이터 전처리 & 정제</div>
+      <div class="slide-subtitle">Data Preprocessing &amp; Cleaning — "데이터의 품질이 모델의 품질을 결정한다"</div>
+    </div>
+  </div>
+  <div class="slide-body">
+    <div class="grid2" style="margin-top:16px;">
+      <div>
+        <div class="section-label">주요 전처리 작업</div>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:8px;">
+          <div class="icon-item">
+            <div class="icon-circle" style="background:#3a2d1b;color:#f59e0b;font-size:14px;">결</div>
+            <div>
+              <div style="font-size:13px;font-weight:700;margin-bottom:4px;color:#f59e0b;">결측값 처리 (Missing Values)</div>
+              <div style="font-size:11px;opacity:0.7;">삭제(listwise), 평균/중앙값 대체, 회귀 대체, KNN 대체. MCAR·MAR·MNAR 유형 파악 후 방법 선택.</div>
+            </div>
+          </div>
+          <div class="icon-item">
+            <div class="icon-circle" style="background:#3a2d1b;color:#ef4444;font-size:14px;">이</div>
+            <div>
+              <div style="font-size:13px;font-weight:700;margin-bottom:4px;color:#ef4444;">이상치 처리 (Outliers)</div>
+              <div style="font-size:11px;opacity:0.7;">IQR 방법: Q1-1.5×IQR ~ Q3+1.5×IQR 범위 외 값. Z-score ±3σ. 도메인 지식으로 판단 후 제거/변환/유지.</div>
+            </div>
+          </div>
+          <div class="icon-item">
+            <div class="icon-circle" style="background:#3a2d1b;color:#4a9eff;font-size:14px;">인</div>
+            <div>
+              <div style="font-size:13px;font-weight:700;margin-bottom:4px;color:#4a9eff;">인코딩 (Encoding)</div>
+              <div style="font-size:11px;opacity:0.7;">범주형→수치형 변환. Label Encoding(순서 있음), One-Hot Encoding(순서 없음), Target Encoding(고카디널리티).</div>
+            </div>
+          </div>
+          <div class="icon-item">
+            <div class="icon-circle" style="background:#3a2d1b;color:#22c55e;font-size:14px;">정</div>
+            <div>
+              <div style="font-size:13px;font-weight:700;margin-bottom:4px;color:#22c55e;">정규화/표준화 (Scaling)</div>
+              <div style="font-size:11px;opacity:0.7;">Min-Max: [0,1] 범위. Z-score: 평균0·분산1. 거리 기반 알고리즘(KNN, SVM)에서 필수.</div>
+            </div>
+          </div>
+          <div class="icon-item">
+            <div class="icon-circle" style="background:#3a2d1b;color:#a855f7;font-size:14px;">차</div>
+            <div>
+              <div style="font-size:13px;font-weight:700;margin-bottom:4px;color:#a855f7;">차원 축소 — PCA (Principal Component Analysis, 주성분분석)</div>
+              <div style="font-size:11px;opacity:0.7;">고차원 데이터 압축. 다중공선성 제거. 시각화 용이.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="section-label">Python 전처리 코드</div>
+        <div class="code-box" style="margin-top:8px;">
+<span class="code-kw">import</span> <span class="code-var">pandas</span> <span class="code-kw">as</span> <span class="code-var">pd</span>
+<span class="code-kw">from</span> <span class="code-var">sklearn.preprocessing</span> <span class="code-kw">import</span> <span class="code-var">StandardScaler</span>
+
+<span class="code-cm"># 결측값 확인</span>
+<span class="code-fn">print</span>(<span class="code-var">df</span>.<span class="code-fn">isnull</span>().<span class="code-fn">sum</span>())
+
+<span class="code-cm"># 수치형 결측값 → 중앙값 대체</span>
+<span class="code-var">df</span>[<span class="code-str">'age'</span>].<span class="code-fn">fillna</span>(<span class="code-var">df</span>[<span class="code-str">'age'</span>].<span class="code-fn">median</span>(), <span class="code-var">inplace</span>=<span class="code-kw">True</span>)
+
+<span class="code-cm"># IQR 이상치 제거</span>
+<span class="code-var">Q1</span> = <span class="code-var">df</span>[<span class="code-str">'income'</span>].<span class="code-fn">quantile</span>(<span class="code-num">0.25</span>)
+<span class="code-var">Q3</span> = <span class="code-var">df</span>[<span class="code-str">'income'</span>].<span class="code-fn">quantile</span>(<span class="code-num">0.75</span>)
+<span class="code-var">IQR</span> = <span class="code-var">Q3</span> - <span class="code-var">Q1</span>
+<span class="code-var">df</span> = <span class="code-var">df</span>[(<span class="code-var">df</span>[<span class="code-str">'income'</span>] >= <span class="code-var">Q1</span>-<span class="code-num">1.5</span>*<span class="code-var">IQR</span>) &amp;
+         (<span class="code-var">df</span>[<span class="code-str">'income'</span>] &lt;= <span class="code-var">Q3</span>+<span class="code-num">1.5</span>*<span class="code-var">IQR</span>)]
+
+<span class="code-cm"># One-Hot 인코딩</span>
+<span class="code-var">df</span> = <span class="code-var">pd</span>.<span class="code-fn">get_dummies</span>(<span class="code-var">df</span>, <span class="code-var">columns</span>=[<span class="code-str">'gender'</span>])
+
+<span class="code-cm"># 표준화 (StandardScaler)</span>
+<span class="code-var">scaler</span> = <span class="code-var">StandardScaler</span>()
+<span class="code-var">df</span>[[<span class="code-str">'age'</span>,<span class="code-str">'income'</span>]] = <span class="code-var">scaler</span>.<span class="code-fn">fit_transform</span>(
+    <span class="code-var">df</span>[[<span class="code-str">'age'</span>,<span class="code-str">'income'</span>]])
+        </div>
+        <div class="card" style="margin-top:16px;background:#3a2d1b44;border:1px solid #f59e0b44;">
+          <div style="font-size:13px;font-weight:700;color:#f59e0b;margin-bottom:6px;">Tidy Data 원칙 (Hadley Wickham)</div>
+          <div style="display:flex;flex-direction:column;gap:4px;">
+            <span style="font-size:12px;opacity:0.8;">① 각 변수는 하나의 열(column)</span>
+            <span style="font-size:12px;opacity:0.8;">② 각 관측치는 하나의 행(row)</span>
+            <span style="font-size:12px;opacity:0.8;">③ 각 관측 단위는 하나의 표</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pg-num">5 / 20</div>
+</div>
+
+<!-- ========== SLIDE 2-3: EDA ========== -->
+<div class="slide t5">
+  <div class="slide-header">
+    <div class="slide-num">2-3</div>
+    <div>
+      <div class="slide-title">STEP 4 | 탐색적 데이터 분석 (EDA)</div>
+      <div class="slide-subtitle">EDA — Exploratory Data Analysis | 데이터를 이해하는 탐정의 시간</div>
+    </div>
+  </div>
+  <div class="slide-body">
+    <div class="grid2" style="margin-top:16px;">
+      <div>
+        <div class="section-label">EDA의 목적과 핵심 질문</div>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:8px;">
+          <div class="icon-item">
+            <div class="icon-circle" style="background:#3a1b1b;color:#ef4444;font-size:11px;font-weight:700;">01</div>
+            <div><div style="font-size:13px;font-weight:700;margin-bottom:3px;">분포 파악 (Distribution)</div><div style="font-size:11px;opacity:0.7;">각 변수의 분포 형태, 중심경향·산포도. 정규분포인가? 왜도·첨도는?</div></div>
+          </div>
+          <div class="icon-item">
+            <div class="icon-circle" style="background:#3a1b1b;color:#f87171;font-size:11px;font-weight:700;">02</div>
+            <div><div style="font-size:13px;font-weight:700;margin-bottom:3px;">관계 탐색 (Relationship)</div><div style="font-size:11px;opacity:0.7;">변수 간 상관관계. 산점도·상관행렬·히트맵으로 시각화.</div></div>
+          </div>
+          <div class="icon-item">
+            <div class="icon-circle" style="background:#3a1b1b;color:#fca5a5;font-size:11px;font-weight:700;">03</div>
+            <div><div style="font-size:13px;font-weight:700;margin-bottom:3px;">그룹 비교 (Comparison)</div><div style="font-size:11px;opacity:0.7;">범주별 차이 존재하는가? 박스플롯, 바이올린플롯으로 비교.</div></div>
+          </div>
+          <div class="icon-item">
+            <div class="icon-circle" style="background:#3a1b1b;color:#ef4444;font-size:11px;font-weight:700;">04</div>
+            <div><div style="font-size:13px;font-weight:700;margin-bottom:3px;">패턴·이상 발견 (Pattern)</div><div style="font-size:11px;opacity:0.7;">시계열 추세, 주기성, 군집, 예상치 못한 이상값 발견.</div></div>
+          </div>
+        </div>
+        <div class="section-label" style="margin-top:20px;">기술통계 핵심 지표</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;">
+          <div class="card" style="padding:12px;">
+            <div style="font-size:11px;font-weight:700;color:#ef4444;margin-bottom:4px;">중심경향 (Center)</div>
+            <div style="font-size:11px;opacity:0.7;line-height:1.7;">평균(Mean): 극단값에 민감<br>중앙값(Median): 이상치에 강건<br>최빈값(Mode): 범주형에 유용</div>
+          </div>
+          <div class="card" style="padding:12px;">
+            <div style="font-size:11px;font-weight:700;color:#f87171;margin-bottom:4px;">산포도 (Spread)</div>
+            <div style="font-size:11px;opacity:0.7;line-height:1.7;">분산(Variance): σ²<br>표준편차(SD, Standard Deviation): σ<br>IQR: Q3-Q1</div>
+          </div>
+          <div class="card" style="padding:12px;">
+            <div style="font-size:11px;font-weight:700;color:#fca5a5;margin-bottom:4px;">형태 (Shape)</div>
+            <div style="font-size:11px;opacity:0.7;line-height:1.7;">왜도(Skewness): 대칭 여부<br>첨도(Kurtosis): 꼬리 두께<br>정규성 검정</div>
+          </div>
+          <div class="card" style="padding:12px;">
+            <div style="font-size:11px;font-weight:700;color:#ef4444;margin-bottom:4px;">관계 (Relation)</div>
+            <div style="font-size:11px;opacity:0.7;line-height:1.7;">피어슨 상관: 선형 관계<br>스피어만 상관: 순위 관계<br>크래머 V: 범주형</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="section-label">시각화 차트 선택 가이드</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;">
+          <div class="card" style="border-top:3px solid #ef4444;padding:14px;">
+            <div style="font-size:12px;font-weight:700;color:#ef4444;margin-bottom:6px;">분포 시각화 (Distribution)</div>
+            <div style="font-size:11px;opacity:0.7;line-height:1.7;">히스토그램 (Histogram): 연속형 분포<br>박스플롯 (Box Plot): 사분위·이상치<br>바이올린플롯 (Violin Plot): 분포 형태<br>KDE 밀도곡선 (Kernel Density Estimate)</div>
+          </div>
+          <div class="card" style="border-top:3px solid #f87171;padding:14px;">
+            <div style="font-size:12px;font-weight:700;color:#f87171;margin-bottom:6px;">관계 시각화 (Relationship)</div>
+            <div style="font-size:11px;opacity:0.7;line-height:1.7;">산점도 (Scatter Plot): 두 변수 관계<br>버블차트 (Bubble Chart): 3변수<br>페어플롯 (Pair Plot): 다변수 행렬<br>히트맵 (Heatmap): 상관행렬</div>
+          </div>
+          <div class="card" style="border-top:3px solid #fca5a5;padding:14px;">
+            <div style="font-size:12px;font-weight:700;color:#fca5a5;margin-bottom:6px;">시계열 시각화 (Time Series)</div>
+            <div style="font-size:11px;opacity:0.7;line-height:1.7;">선 그래프 (Line Chart): 추세<br>구간차트 (Area Chart): 불확실성<br>계절분해 (Seasonal Decomposition): STL<br>이동평균선 (Moving Average)</div>
+            <div style="font-size:10px;margin-top:6px;padding:6px 8px;background:#2a1a1a;border-radius:4px;color:#fca5a5;line-height:1.6;"><strong>STL</strong> = Seasonal and Trend decomposition using Loess<br><span style="opacity:0.8;">Loess(국소 가중 회귀)를 활용해 시계열을 계절성·추세·잔차로 분해하는 기법</span></div>
+          </div>
+          <div class="card" style="border-top:3px solid #ef4444;padding:14px;">
+            <div style="font-size:12px;font-weight:700;color:#ef4444;margin-bottom:6px;">구성 시각화 (Composition)</div>
+            <div style="font-size:11px;opacity:0.7;line-height:1.7;">막대차트 (Bar Chart): 범주 비교<br>파이차트 (Pie Chart): 비율 (5개 이내)<br>트리맵 (Treemap): 계층 구조<br>워드클라우드 (Word Cloud): 텍스트</div>
+          </div>
+        </div>
+        <div class="code-box" style="margin-top:14px;font-size:11px;">
+<span class="code-kw">import</span> <span class="code-var">seaborn</span> <span class="code-kw">as</span> <span class="code-var">sns</span>
+<span class="code-cm"># 상관 히트맵</span>
+<span class="code-var">sns</span>.<span class="code-fn">heatmap</span>(<span class="code-var">df</span>.<span class="code-fn">corr</span>(), <span class="code-var">annot</span>=<span class="code-kw">True</span>, <span class="code-var">cmap</span>=<span class="code-str">'coolwarm'</span>)
+<span class="code-cm"># 페어플롯 (pair plot)</span>
+<span class="code-var">sns</span>.<span class="code-fn">pairplot</span>(<span class="code-var">df</span>, <span class="code-var">hue</span>=<span class="code-str">'target'</span>)
+<span class="code-cm"># 기술통계 한번에</span>
+<span class="code-fn">print</span>(<span class="code-var">df</span>.<span class="code-fn">describe</span>())
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pg-num">6 / 20</div>
+</div>
+
+<!-- ========== SLIDE 3-1: 핵심 통계 이론 ========== -->
+<div class="slide t6">
+  <div class="slide-header">
+    <div class="slide-num">3-1</div>
+    <div>
+      <div class="slide-title">핵심 통계 이론 & 주요 개념</div>
+      <div class="slide-subtitle">Statistical Foundations — 데이터사이언스의 수학적 기반</div>
+    </div>
+  </div>
+  <div class="slide-body">
+    <div class="grid2" style="margin-top:16px;">
+      <div>
+        <div class="section-label">추론통계 (Inferential Statistics)</div>
+
+        <div class="concept-card" style="border-left-color:#06b6d4;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+            <span style="font-size:13px;font-weight:700;color:#06b6d4;">가설검정 (Hypothesis Testing)</span>
+            <span class="lv lv-b">초급</span>
+          </div>
+          <div class="easy">"내가 관찰한 차이나 효과가 진짜인가, 아니면 우연인가?"를 수학적으로 판단하는 방법.<br>예: "남녀 임금 차이가 실제로 존재하는가, 우연한 샘플 차이인가?"</div>
+          <div class="formula2">H₀(귀무가설): 차이 없음 vs H₁(대립가설): 차이 있음</div>
+          <div class="formula2">p-value &lt; α(보통 0.05) → 귀무가설 기각 → "차이가 있다"</div>
+          <div class="when">
+            <b style="color:#67e8f9;">언제 쓰나:</b> 두 그룹 비교(t-검정), 3개 이상 그룹(ANOVA), 범주형 변수 관계(카이제곱 χ² 검정)<br>
+            <b style="color:#fbbf24;">주의:</b> p-value는 효과 크기가 아님. 표본이 크면 사소한 차이도 유의해질 수 있음
+          </div>
+        </div>
+
+        <div class="concept-card" style="border-left-color:#22c55e;margin-top:12px;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+            <span style="font-size:13px;font-weight:700;color:#22c55e;">중심극한정리 (CLT — Central Limit Theorem)</span>
+            <span class="lv lv-b">초급</span>
+          </div>
+          <div class="easy">모집단이 어떤 분포든, 샘플을 충분히 뽑아 평균을 내면 정규분포에 가까워진다는 원리.<br>예: 주사위는 균등분포지만 100번 던진 평균들은 종 모양(정규분포)으로 모임.</div>
+          <div class="formula2">표본평균 X̄ ~ N(μ, σ²/n)   (n이 클수록 정규분포에 근사)</div>
+          <div class="when"><b style="color:#67e8f9;">의미:</b> 통계적 추론이 가능한 근거. 현실에서 정규분포 가정을 쓸 수 있는 이론적 토대.</div>
+        </div>
+
+        <div class="concept-card" style="border-left-color:#f59e0b;margin-top:12px;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+            <span style="font-size:13px;font-weight:700;color:#f59e0b;">베이즈 정리 (Bayes' Theorem)</span>
+            <span class="lv lv-m">중급</span>
+          </div>
+          <div class="easy">새로운 증거(데이터)를 보고 기존의 믿음(확률)을 업데이트하는 방법.<br>예: 코로나 검사 양성이어도 거짓양성률을 고려해 실제 감염 확률을 재계산.</div>
+          <div class="formula2">P(A|B) = P(B|A) × P(A) / P(B)</div>
+          <div class="when">
+            <b style="color:#67e8f9;">언제 쓰나:</b> 스팸 필터(나이브 베이즈), A/B 테스트 해석, 의료 진단, 추천 시스템
+          </div>
+        </div>
+
+        <div class="concept-card" style="border-left-color:#a855f7;margin-top:12px;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+            <span style="font-size:13px;font-weight:700;color:#a855f7;">엔트로피 (Entropy) — 정보 이론</span>
+            <span class="lv lv-m">중급</span>
+          </div>
+          <div class="easy">불확실성의 양을 수학적으로 측정. "얼마나 많은 정보가 담겼는가?"<br>동전 던지기(50:50)는 엔트로피 최대, 확실한 결과는 엔트로피 0.</div>
+          <div class="formula2">H(X) = -Σ p(x) × log₂p(x)</div>
+          <div class="when"><b style="color:#67e8f9;">언제 쓰나:</b> 의사결정나무 분기 기준(정보이득), 딥러닝 손실함수(교차엔트로피 Cross-Entropy)</div>
+        </div>
+      </div>
+
+      <div>
+        <div class="section-label">회귀분석 & 핵심 개념</div>
+
+        <div class="concept-card" style="border-left-color:#06b6d4;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+            <span style="font-size:13px;font-weight:700;color:#06b6d4;">선형회귀 (Linear Regression)</span>
+            <span class="lv lv-b">초급</span>
+          </div>
+          <div class="easy">두 변수 사이 선형 관계를 직선으로 표현.<br>예: "학습 시간이 1시간 늘면 시험 점수가 평균 몇 점 오르나?"</div>
+          <div class="formula2">ŷ = β₀ + β₁x₁ + β₂x₂ + ε</div>
+          <div class="when">
+            <b style="color:#67e8f9;">평가 지표:</b><br>
+            R² (결정계수): 모델이 데이터 분산을 얼마나 설명하는가 (0~1)<br>
+            RMSE: 예측 오차의 평균적 크기 (단위: 원본 변수와 동일)<br>
+            p-value: 각 독립변수가 통계적으로 유의한가 (&lt;0.05 이면 유의)
+          </div>
+        </div>
+
+        <div class="concept-card" style="border-left-color:#ef4444;margin-top:12px;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+            <span style="font-size:13px;font-weight:700;color:#ef4444;">편향-분산 트레이드오프 (Bias-Variance Tradeoff)</span>
+            <span class="lv lv-m">중급</span>
+          </div>
+          <div class="easy">
+            모델이 너무 단순하면 → 편향(Bias) 큼 → 중요한 패턴을 놓침 → 과소적합 (Underfitting)<br>
+            모델이 너무 복잡하면 → 분산(Variance) 큼 → 훈련 데이터 잡음까지 외움 → 과적합 (Overfitting)
+          </div>
+          <div class="formula2">총 오류 = 편향² + 분산 + 줄일 수 없는 오류(Irreducible Error)</div>
+          <div class="when">
+            <b style="color:#67e8f9;">해결책:</b> 정규화(Regularization) — L1(Lasso), L2(Ridge)로 복잡도 제어<br>
+            <b style="color:#fbbf24;">언제 쓰나:</b> 훈련 오류는 낮은데 테스트 오류가 높을 때 → 과적합 의심
+          </div>
+        </div>
+
+        <div class="concept-card" style="border-left-color:#14b8a6;margin-top:12px;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+            <span style="font-size:13px;font-weight:700;color:#14b8a6;">상관관계 ≠ 인과관계</span>
+            <span class="lv lv-b">초급</span>
+          </div>
+          <div class="easy">두 변수가 함께 움직인다고 해서 한쪽이 원인인 것은 아님.<br>예: "아이스크림 판매량과 익사 사고 동시 증가" → 원인은 '더운 날씨'(교란변수, Confounding Variable)</div>
+          <div class="when">
+            <b style="color:#67e8f9;">인과관계 파악법 (고급):</b><br>
+            무작위 대조실험 (RCT) <span class="lv lv-m">중급</span> / 이중차분법 DID <span class="lv lv-a">고급</span> / 도구변수법 IV <span class="lv lv-a">고급</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pg-num">7 / 20</div>
+</div>
+
+<!-- ========== SLIDE 3-2: 머신러닝 알고리즘 ========== -->
+<div class="slide t7">
+  <div class="slide-header">
+    <div class="slide-num">3-2</div>
+    <div>
+      <div class="slide-title">STEP 5 | 머신러닝 핵심 알고리즘</div>
+      <div class="slide-subtitle">Machine Learning Algorithms — 언제 무엇을 쓸까</div>
+    </div>
+  </div>
+  <div class="slide-body">
+    <div class="section-label" style="margin-top:16px;">머신러닝 분류 체계 & 주요 알고리즘</div>
+    <div class="grid3" style="margin-top:8px;">
+      <div>
+        <div class="card" style="border-top:4px solid #84cc16;margin-bottom:12px;">
+          <div style="font-size:14px;font-weight:700;color:#84cc16;margin-bottom:6px;">지도학습 (Supervised Learning)</div>
+          <div style="font-size:11px;opacity:0.65;">정답(레이블)이 있는 데이터로 학습. 입력→출력 매핑.</div>
+          <div style="margin-top:6px;display:flex;gap:6px;">
+            <span class="tag" style="background:#1c3a0d;color:#86efac;">회귀</span>
+            <span class="tag" style="background:#1c3a0d;color:#86efac;">분류</span>
+          </div>
+        </div>
+        <div class="concept-card" style="border-left-color:#84cc16;padding:14px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">
+            <span style="font-size:12px;font-weight:700;">로지스틱 회귀</span><span class="lv lv-b">초급</span>
+          </div>
+          <div class="easy" style="font-size:11px;">"합격/불합격", "이탈/유지"처럼 두 가지 중 하나를 예측하는 분류 모델.</div>
+          <div class="when" style="font-size:10px;"><b>쓸 때:</b> 이진분류, 계수로 영향력 해석 필요 시<br><b>장점:</b> 빠름, 결과 해석 쉬움<br><b>단점:</b> 비선형 패턴 취약</div>
+        </div>
+        <div class="concept-card" style="border-left-color:#4ade80;padding:14px;margin-top:8px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">
+            <span style="font-size:12px;font-weight:700;">랜덤포레스트</span><span class="lv lv-b">초급</span>
+          </div>
+          <div class="easy" style="font-size:11px;">여러 의사결정나무가 각자 예측 → 다수결로 최종 결정. 한 나무의 실수를 다른 나무들이 보완.</div>
+          <div class="when" style="font-size:10px;"><b>쓸 때:</b> 다양한 문제의 기본 베이스라인, 변수 중요도 파악<br><b>장점:</b> 높은 성능, 과적합 강건<br><b>단점:</b> 해석 어려움</div>
+        </div>
+        <div class="concept-card" style="border-left-color:#86efac;padding:14px;margin-top:8px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">
+            <span style="font-size:12px;font-weight:700;">XGBoost / LightGBM</span><span class="lv lv-m">중급</span>
+          </div>
+          <div class="easy" style="font-size:11px;">이전 나무가 틀린 부분을 다음 나무가 집중 보완하며 순차적으로 성능 향상(부스팅).</div>
+          <div class="when" style="font-size:10px;"><b>쓸 때:</b> Kaggle 대회, 정형 데이터 예측 경진<br><b>단점:</b> 하이퍼파라미터 튜닝 필요</div>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="border-top:4px solid #06b6d4;margin-bottom:12px;">
+          <div style="font-size:14px;font-weight:700;color:#06b6d4;margin-bottom:6px;">비지도학습 (Unsupervised Learning)</div>
+          <div style="font-size:11px;opacity:0.65;">정답 없이 데이터 스스로의 구조·패턴 발견. "이 데이터들은 어떻게 묶이나?"</div>
+          <div style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap;">
+            <span class="tag" style="background:#0d2d35;color:#67e8f9;">군집화</span>
+            <span class="tag" style="background:#0d2d35;color:#67e8f9;">차원축소</span>
+          </div>
+        </div>
+        <div class="concept-card" style="border-left-color:#06b6d4;padding:14px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">
+            <span style="font-size:12px;font-weight:700;">K-Means 군집화</span><span class="lv lv-b">초급</span>
+          </div>
+          <div class="easy" style="font-size:11px;">비슷한 데이터끼리 K개 그룹으로 묶기. 중심점을 반복 이동해 최적 그룹 탐색.</div>
+          <div class="when" style="font-size:10px;"><b>쓸 때:</b> 고객 세분화, 뉴스 군집, 설문 응답 유형화<br><b>주의:</b> K를 미리 정해야 함, 이상치에 민감</div>
+        </div>
+        <div class="concept-card" style="border-left-color:#67e8f9;padding:14px;margin-top:8px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">
+            <span style="font-size:12px;font-weight:700;">PCA (Principal Component Analysis, 주성분분석)</span><span class="lv lv-m">중급</span>
+          </div>
+          <div class="easy" style="font-size:11px;">수십 개 변수를 정보 손실 최소화하며 2~3개로 압축. 설문 50문항 → 핵심 요인 3개 추출.</div>
+          <div class="when" style="font-size:10px;"><b>쓸 때:</b> 고차원 데이터 시각화, 다중공선성 제거</div>
+        </div>
+        <div class="concept-card" style="border-left-color:#22d3ee;padding:14px;margin-top:8px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">
+            <span style="font-size:12px;font-weight:700;">LDA 토픽 모델링 (Latent Dirichlet Allocation)</span><span class="lv lv-m">중급</span>
+          </div>
+          <div class="easy" style="font-size:11px;">문서 집합에서 숨겨진 주제 자동 발견. "뉴스 1000건 → 정치/경제/스포츠 자동 분류"</div>
+          <div class="when" style="font-size:10px;"><b>쓸 때:</b> 정책 문서 분석, 여론조사 텍스트, 역사 자료</div>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="border-top:4px solid #a855f7;margin-bottom:12px;">
+          <div style="font-size:14px;font-weight:700;color:#a855f7;margin-bottom:6px;">기타 핵심 알고리즘</div>
+          <div style="font-size:11px;opacity:0.65;">문제 유형과 데이터 특성에 따라 선택.</div>
+        </div>
+        <div class="concept-card" style="border-left-color:#a855f7;padding:14px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">
+            <span style="font-size:12px;font-weight:700;">SVM (Support Vector Machine, 서포트 벡터 머신)</span><span class="lv lv-m">중급</span>
+          </div>
+          <div class="easy" style="font-size:11px;">두 그룹을 가장 넓은 여백(Margin)으로 구분하는 경계선 찾기. 텍스트 분류에 강력.</div>
+          <div class="when" style="font-size:10px;"><b>쓸 때:</b> 텍스트·이미지 분류, 소규모 고차원 데이터</div>
+        </div>
+        <div class="concept-card" style="border-left-color:#c084fc;padding:14px;margin-top:8px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">
+            <span style="font-size:12px;font-weight:700;">KNN (K-Nearest Neighbors, K-최근접 이웃)</span><span class="lv lv-b">초급</span>
+          </div>
+          <div class="easy" style="font-size:11px;">새 데이터와 가장 가까운 K개 이웃의 다수결로 분류. "비슷한 사람은 비슷하게 행동한다"</div>
+          <div class="when" style="font-size:10px;"><b>쓸 때:</b> 개념 이해용, 추천 시스템 기초<br><b>단점:</b> 대용량에서 매우 느림</div>
+        </div>
+        <div class="concept-card" style="border-left-color:#7c3aed;padding:14px;margin-top:8px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">
+            <span style="font-size:12px;font-weight:700;">앙상블 (Ensemble) — 여러 모델 조합</span><span class="lv lv-m">중급</span>
+          </div>
+          <div class="easy" style="font-size:11px;">여러 모델의 예측을 결합해 단일 모델보다 더 나은 성능 달성.<br>배깅(병렬 결합) / 부스팅(순차 보완) / 스태킹(층위 조합)</div>
+          <div class="when" style="font-size:10px;"><b>대표:</b> 랜덤포레스트(배깅), XGBoost(부스팅)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pg-num">8 / 20</div>
+</div>
+
+<!-- ========== SLIDE 3-3: 모델 검증 ========== -->
+<div class="slide t9">
+  <div class="slide-header">
+    <div class="slide-num">3-3</div>
+    <div>
+      <div class="slide-title">STEP 6 | 모델 검증, 평가 & 해석</div>
+      <div class="slide-subtitle">Model Validation, Evaluation &amp; Interpretation</div>
+    </div>
+  </div>
+  <div class="slide-body">
+    <div class="grid2" style="margin-top:16px;">
+      <div>
+        <div class="section-label">분류 모델 평가 지표</div>
+        <div class="concept-card" style="border-left-color:#14b8a6;">
+          <div style="font-size:13px;font-weight:700;color:#14b8a6;margin-bottom:8px;">혼동행렬 (Confusion Matrix) <span class="lv lv-b">초급</span></div>
+          <div class="easy">모델의 예측 결과를 실제 정답과 대조한 표. 어디서 어떻게 틀렸는지 한눈에 파악.</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;font-size:11px;margin:10px 0;">
+            <div style="background:#1a1d2e;padding:8px;border-radius:6px;text-align:center;"></div>
+            <div style="background:#14b8a644;padding:8px;border-radius:6px;text-align:center;font-weight:700;">예측: Positive</div>
+            <div style="background:#14b8a644;padding:8px;border-radius:6px;text-align:center;font-weight:700;">예측: Negative</div>
+            <div style="background:#14b8a644;padding:8px;border-radius:6px;text-align:center;font-weight:700;">실제: Positive</div>
+            <div style="background:#1c3a0d;padding:8px;border-radius:6px;text-align:center;">TP (정답)</div>
+            <div style="background:#3a1b1b;padding:8px;border-radius:6px;text-align:center;">FN (놓침)</div>
+            <div style="background:#14b8a644;padding:8px;border-radius:6px;text-align:center;font-weight:700;">실제: Negative</div>
+            <div style="background:#3a1b1b;padding:8px;border-radius:6px;text-align:center;">FP (오탐)</div>
+            <div style="background:#1c3a0d;padding:8px;border-radius:6px;text-align:center;">TN (정답)</div>
+          </div>
+        </div>
+        <div class="concept-card" style="border-left-color:#22c55e;margin-top:10px;">
+          <div style="font-size:13px;font-weight:700;color:#22c55e;margin-bottom:6px;">분류 평가 4가지 <span class="lv lv-b">초급</span></div>
+          <div class="formula2">정확도 (Accuracy) = (TP+TN) / 전체 — "전체 중 맞힌 비율"</div>
+          <div style="font-size:11px;opacity:0.55;margin-bottom:5px;">불균형 데이터에서는 무의미할 수 있음 (95% 정상 데이터를 다 정상이라 해도 95%)</div>
+          <div class="formula2">정밀도 (Precision) = TP / (TP+FP) — "양성 예측 중 실제 양성 비율"</div>
+          <div style="font-size:11px;opacity:0.55;margin-bottom:5px;">오탐 비용이 클 때 중요 (예: 무고한 사람을 범인으로 지목하면 안 될 때)</div>
+          <div class="formula2">재현율 (Recall/Sensitivity) = TP / (TP+FN) — "실제 양성 중 발견한 비율"</div>
+          <div style="font-size:11px;opacity:0.55;margin-bottom:5px;">놓침 비용이 클 때 중요 (예: 암 환자를 정상으로 오진하면 안 될 때)</div>
+          <div class="formula2">F1 Score = 2×(Precision×Recall)/(Precision+Recall) — 두 지표의 조화평균</div>
+        </div>
+        <div class="concept-card" style="border-left-color:#06b6d4;margin-top:10px;">
+          <div style="font-size:13px;font-weight:700;color:#06b6d4;margin-bottom:4px;">ROC-AUC <span class="lv lv-m">중급</span></div>
+          <div class="abbr-note">ROC = Receiver Operating Characteristic (수신자 조작 특성 곡선) | AUC = Area Under the Curve (곡선 아래 면적)</div>
+          <div class="easy" style="margin-top:6px;">임계값을 바꿔가며 True Positive율 vs False Positive율 트레이드오프 시각화.<br>AUC = 1: 완벽 모델 / AUC = 0.5: 랜덤 수준 / 불균형 데이터에 특히 유용</div>
+        </div>
+      </div>
+      <div>
+        <div class="section-label">회귀 모델 평가 지표</div>
+        <div class="grid2" style="gap:8px;margin-top:8px;">
+          <div class="concept-card" style="border-left-color:#14b8a6;padding:12px;">
+            <div style="font-size:12px;font-weight:700;color:#14b8a6;">MAE <span class="lv lv-b">초급</span></div>
+            <div class="abbr-note">Mean Absolute Error — 평균 절대 오차</div>
+            <div class="formula2" style="font-size:11px;">1/n Σ|y - ŷ|</div>
+            <div style="font-size:11px;opacity:0.6;">오차 절댓값의 평균. 이상치 영향 적음. 직관적 해석 용이.</div>
+          </div>
+          <div class="concept-card" style="border-left-color:#22c55e;padding:12px;">
+            <div style="font-size:12px;font-weight:700;color:#22c55e;">RMSE <span class="lv lv-b">초급</span></div>
+            <div class="abbr-note">Root Mean Squared Error — 평균 제곱근 오차</div>
+            <div class="formula2" style="font-size:11px;">√(1/n Σ(y - ŷ)²)</div>
+            <div style="font-size:11px;opacity:0.6;">큰 오차에 더 민감. 단위가 원본과 동일해 해석 용이.</div>
+          </div>
+          <div class="concept-card" style="border-left-color:#4a9eff;padding:12px;">
+            <div style="font-size:12px;font-weight:700;color:#4a9eff;">R² (결정계수) <span class="lv lv-b">초급</span></div>
+            <div class="abbr-note">Coefficient of Determination — 결정계수</div>
+            <div class="formula2" style="font-size:11px;">1 - SS_res / SS_tot</div>
+            <div style="font-size:11px;opacity:0.6;">0~1, 모델이 전체 분산을 얼마나 설명하는가.</div>
+          </div>
+          <div class="concept-card" style="border-left-color:#f59e0b;padding:12px;">
+            <div style="font-size:12px;font-weight:700;color:#f59e0b;">MAPE <span class="lv lv-b">초급</span></div>
+            <div class="abbr-note">Mean Absolute Percentage Error — 평균 절대 백분율 오차</div>
+            <div class="formula2" style="font-size:11px;">1/n Σ|y - ŷ| / y × 100%</div>
+            <div style="font-size:11px;opacity:0.6;">퍼센트 단위 오차. 서로 다른 모델·데이터 비교에 유용.</div>
+          </div>
+        </div>
+        <div class="section-label" style="margin-top:20px;">교차검증 & 모델 해석</div>
+        <div class="concept-card" style="border-left-color:#a855f7;margin-top:8px;">
+          <div style="font-size:13px;font-weight:700;color:#a855f7;margin-bottom:6px;">K-Fold 교차검증 (Cross-Validation) <span class="lv lv-b">초급</span></div>
+          <div class="easy">데이터를 K개로 나눠 번갈아 검증. 전체 데이터를 한 번씩 테스트에 사용해 성능을 더 신뢰있게 추정. K=5 또는 10 권장.</div>
+        </div>
+        <div class="concept-card" style="border-left-color:#ec4899;margin-top:10px;">
+          <div style="font-size:13px;font-weight:700;color:#ec4899;margin-bottom:6px;">설명가능 AI — XAI (eXplainable AI) <span class="lv lv-m">중급</span></div>
+          <div class="grid2" style="gap:8px;margin-top:6px;">
+            <div style="background:#0d1117;border-radius:8px;padding:10px;">
+              <div style="font-size:12px;font-weight:700;color:#ec4899;">SHAP</div>
+              <div class="abbr-note">SHapley Additive exPlanations</div>
+              <div style="font-size:11px;opacity:0.7;margin-top:4px;">게임이론 기반. 각 변수가 예측에 기여한 정도를 수치로 표현.</div>
+            </div>
+            <div style="background:#0d1117;border-radius:8px;padding:10px;">
+              <div style="font-size:12px;font-weight:700;color:#f472b6;">LIME</div>
+              <div class="abbr-note">Local Interpretable Model-agnostic Explanations</div>
+              <div style="font-size:11px;opacity:0.7;margin-top:4px;">개별 예측 근방을 선형 모델로 근사해 설명. 어떤 모델에도 적용 가능.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pg-num">9 / 20</div>
+</div>
+
+<!-- ========== SLIDE 4-1: Python ========== -->
+<div class="slide t10">
+  <div class="slide-header">
+    <div class="slide-num">4-1</div>
+    <div>
+      <div class="slide-title">Python 데이터사이언스 생태계</div>
+      <div class="slide-subtitle">Python Ecosystem — 데이터사이언티스트의 주요 도구</div>
+    </div>
+  </div>
+  <div class="slide-body">
+    <div class="grid2" style="margin-top:16px;">
+      <div>
+        <div class="section-label">핵심 라이브러리 스택</div>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:8px;">
+          <div class="icon-item"><div class="icon-circle" style="background:#3a2d1b;color:#eab308;font-size:13px;font-weight:700;">Pd</div><div><div style="font-size:13px;font-weight:700;color:#eab308;margin-bottom:3px;">Pandas — 데이터 조작의 기본</div><div style="font-size:11px;opacity:0.7;">DataFrame 구조, 그룹바이, 병합, 피벗. read_csv/excel/sql. 90%의 데이터 전처리 커버.</div></div></div>
+          <div class="icon-item"><div class="icon-circle" style="background:#3a2d1b;color:#f59e0b;font-size:13px;font-weight:700;">Np</div><div><div style="font-size:13px;font-weight:700;color:#f59e0b;margin-bottom:3px;">NumPy — 수치 연산의 기반</div><div style="font-size:11px;opacity:0.7;">다차원 배열(ndarray), 행렬 연산. 거의 모든 ML 라이브러리의 의존성.</div></div></div>
+          <div class="icon-item"><div class="icon-circle" style="background:#3a2d1b;color:#fbbf24;font-size:13px;font-weight:700;">Sk</div><div><div style="font-size:13px;font-weight:700;color:#fbbf24;margin-bottom:3px;">Scikit-learn — ML의 표준 도구</div><div style="font-size:11px;opacity:0.7;">fit/predict 일관된 API. 전처리·분류·회귀·군집·평가 통합. Pipeline으로 워크플로우 구성.</div></div></div>
+          <div class="icon-item"><div class="icon-circle" style="background:#3a2d1b;color:#d97706;font-size:13px;font-weight:700;">Plt</div><div><div style="font-size:13px;font-weight:700;color:#d97706;margin-bottom:3px;">Matplotlib / Seaborn / Plotly</div><div style="font-size:11px;opacity:0.7;">Matplotlib: 세밀한 제어. Seaborn: 통계적 시각화. Plotly: 인터랙티브 차트.</div></div></div>
+          <div class="icon-item"><div class="icon-circle" style="background:#3a2d1b;color:#eab308;font-size:13px;font-weight:700;">St</div><div><div style="font-size:13px;font-weight:700;color:#eab308;margin-bottom:3px;">Statsmodels — 통계 심화</div><div style="font-size:11px;opacity:0.7;">가설검정, ANOVA, 회귀 상세 출력(p-value, 신뢰구간). 사회과학 분석에 필수.</div></div></div>
+        </div>
+      </div>
+      <div>
+        <div class="section-label">실전 분석 파이프라인 코드</div>
+        <div class="code-box" style="margin-top:8px;font-size:11px;">
+<span class="code-kw">from</span> <span class="code-var">sklearn.pipeline</span> <span class="code-kw">import</span> <span class="code-var">Pipeline</span>
+<span class="code-kw">from</span> <span class="code-var">sklearn.preprocessing</span> <span class="code-kw">import</span> <span class="code-var">StandardScaler</span>
+<span class="code-kw">from</span> <span class="code-var">sklearn.ensemble</span> <span class="code-kw">import</span> <span class="code-var">RandomForestClassifier</span>
+<span class="code-kw">from</span> <span class="code-var">sklearn.model_selection</span> <span class="code-kw">import</span> <span class="code-var">cross_val_score</span>
+
+<span class="code-cm"># 파이프라인 구성 (전처리 + 모델을 하나로)</span>
+<span class="code-var">pipe</span> = <span class="code-var">Pipeline</span>([
+    (<span class="code-str">'scaler'</span>, <span class="code-var">StandardScaler</span>()),
+    (<span class="code-str">'clf'</span>, <span class="code-var">RandomForestClassifier</span>(<span class="code-var">n_estimators</span>=<span class="code-num">100</span>))
+])
+<span class="code-cm"># K=5 교차검증</span>
+<span class="code-var">scores</span> = <span class="code-fn">cross_val_score</span>(
+    <span class="code-var">pipe</span>, <span class="code-var">X</span>, <span class="code-var">y</span>, <span class="code-var">cv</span>=<span class="code-num">5</span>, <span class="code-var">scoring</span>=<span class="code-str">'f1'</span>)
+<span class="code-fn">print</span>(<span class="code-str">f"F1: {scores.mean():.3f} ± {scores.std():.3f}"</span>)
+<span class="code-cm"># SHAP으로 모델 해석</span>
+<span class="code-kw">import</span> <span class="code-var">shap</span>
+<span class="code-var">explainer</span> = <span class="code-var">shap</span>.<span class="code-var">TreeExplainer</span>(<span class="code-var">pipe</span>[<span class="code-str">'clf'</span>])
+<span class="code-var">shap</span>.<span class="code-fn">summary_plot</span>(<span class="code-var">explainer</span>(<span class="code-var">X_test</span>), <span class="code-var">X_test</span>)
+        </div>
+        <div class="grid3" style="gap:8px;margin-top:16px;">
+          <div class="card" style="padding:12px;text-align:center;border-top:2px solid #eab308;"><div style="font-size:12px;font-weight:700;color:#eab308;">Jupyter Notebook</div><div style="font-size:10px;opacity:0.6;margin-top:4px;">코드+결과+문서 통합</div></div>
+          <div class="card" style="padding:12px;text-align:center;border-top:2px solid #f59e0b;"><div style="font-size:12px;font-weight:700;color:#f59e0b;">Google Colab</div><div style="font-size:10px;opacity:0.6;margin-top:4px;">무료 GPU, 설치 불필요</div></div>
+          <div class="card" style="padding:12px;text-align:center;border-top:2px solid #fbbf24;"><div style="font-size:12px;font-weight:700;color:#fbbf24;">VS Code</div><div style="font-size:10px;opacity:0.6;margin-top:4px;">전문 IDE, 버전관리</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pg-num">10 / 20</div>
+</div>
+
+<!-- ========== SLIDE 4-2: 딥러닝 타임라인 ========== -->
+<div class="slide t11">
+  <div class="slide-header">
+    <div class="slide-num">4-2</div>
+    <div>
+      <div class="slide-title">딥러닝 & 인공지능의 발전과 의미</div>
+      <div class="slide-subtitle">Deep Learning &amp; AI Timeline — 신경망에서 LLM까지</div>
+    </div>
+  </div>
+  <div class="slide-body">
+    <div style="display:flex;gap:32px;margin-top:16px;">
+      <div style="flex:0 0 480px;">
+        <div class="section-label">발전 타임라인</div>
+        <div style="position:relative;padding-left:28px;margin-top:8px;">
+          <div style="position:absolute;left:10px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,#6366f1,#818cf8,#a5b4fc,#c7d2fe,#fde047,#ef4444);"></div>
+          <div style="position:relative;margin-bottom:13px;padding-left:20px;"><div style="position:absolute;left:-22px;top:4px;width:12px;height:12px;border-radius:50%;background:#4b5563;border:2px solid #9ca3af;"></div><span style="font-size:11px;font-weight:700;color:#9ca3af;">1957</span><span style="font-size:12px;font-weight:600;margin-left:8px;">퍼셉트론 (Perceptron)</span><div style="font-size:11px;opacity:0.6;margin-top:2px;">최초의 인공신경망. 단층 구조로 선형 분리만 가능.</div></div>
+          <div style="position:relative;margin-bottom:13px;padding-left:20px;"><div style="position:absolute;left:-22px;top:4px;width:12px;height:12px;border-radius:50%;background:#3730a3;border:2px solid #818cf8;"></div><span style="font-size:11px;font-weight:700;color:#818cf8;">1986</span><span style="font-size:12px;font-weight:600;margin-left:8px;">역전파 알고리즘 (Backpropagation)</span><div style="font-size:11px;opacity:0.6;margin-top:2px;">다층 신경망 학습 가능. 딥러닝의 수학적 기반 완성.</div></div>
+          <div style="position:relative;margin-bottom:13px;padding-left:20px;"><div style="position:absolute;left:-22px;top:4px;width:12px;height:12px;border-radius:50%;background:#312e81;border:2px solid #a5b4fc;"></div><span style="font-size:11px;font-weight:700;color:#a5b4fc;">1997</span><span style="font-size:12px;font-weight:600;margin-left:8px;">LSTM (Long Short-Term Memory)</span><div style="font-size:11px;opacity:0.6;margin-top:2px;">장기 의존성 문제 해결. 번역·음성인식 기반.</div></div>
+          <div style="position:relative;margin-bottom:13px;padding-left:20px;"><div style="position:absolute;left:-22px;top:4px;width:14px;height:14px;border-radius:50%;background:#6366f1;border:2px solid #fff;"></div><span style="font-size:11px;font-weight:700;color:#fff;">2012</span><span style="font-size:12px;font-weight:700;margin-left:8px;color:#c7d2fe;">AlexNet — 딥러닝 혁명</span><div style="font-size:11px;opacity:0.6;margin-top:2px;">ImageNet 대회 압도적 우승. GPU 병렬학습 + ReLU. CNN 실용화. 딥러닝 르네상스 시작.</div></div>
+          <div style="position:relative;margin-bottom:13px;padding-left:20px;"><div style="position:absolute;left:-22px;top:4px;width:12px;height:12px;border-radius:50%;background:#4f46e5;border:2px solid #818cf8;"></div><span style="font-size:11px;font-weight:700;color:#818cf8;">2014</span><span style="font-size:12px;font-weight:600;margin-left:8px;">GAN (Generative Adversarial Network)</span><div style="font-size:11px;opacity:0.6;margin-top:2px;">생성자-판별자 경쟁으로 실제 같은 데이터 생성. 합성 데이터·이미지 생성의 기반.</div></div>
+          <div style="position:relative;margin-bottom:13px;padding-left:20px;"><div style="position:absolute;left:-22px;top:4px;width:15px;height:15px;border-radius:50%;background:#6366f1;border:2px solid #fde047;"></div><span style="font-size:11px;font-weight:700;color:#fde047;">2017</span><span style="font-size:12px;font-weight:700;margin-left:8px;color:#fde047;">"Attention is All You Need" — Transformer</span><div style="font-size:11px;opacity:0.6;margin-top:2px;">Self-Attention으로 RNN 대체. 병렬처리 가능. 현대 AI 아키텍처의 핵심.</div></div>
+          <div style="position:relative;margin-bottom:13px;padding-left:20px;"><div style="position:absolute;left:-22px;top:4px;width:13px;height:13px;border-radius:50%;background:#4f46e5;border:2px solid #a5b4fc;"></div><span style="font-size:11px;font-weight:700;color:#a5b4fc;">2018–2020</span><span style="font-size:12px;font-weight:700;margin-left:8px;">BERT / GPT-2 / GPT-3</span><div style="font-size:11px;opacity:0.6;margin-top:2px;">사전훈련+미세조정 패러다임. NLP 성능 대폭 향상. 언어 모델 대형화 시작.</div></div>
+          <div style="position:relative;margin-bottom:13px;padding-left:20px;"><div style="position:absolute;left:-22px;top:4px;width:16px;height:16px;border-radius:50%;background:#7c3aed;border:2px solid #fde047;"></div><span style="font-size:11px;font-weight:700;color:#fde047;">2022–2023</span><span style="font-size:12px;font-weight:700;margin-left:8px;color:#fde047;">ChatGPT / GPT-4 / Claude</span><div style="font-size:11px;opacity:0.6;margin-top:2px;">RLHF(인간 피드백 강화학습)로 정렬. 수억 명 사용. AI 대중화의 분기점.</div></div>
+          <div style="position:relative;padding-left:20px;"><div style="position:absolute;left:-22px;top:4px;width:16px;height:16px;border-radius:50%;background:#ef4444;border:2px solid #fde047;"></div><span style="font-size:11px;font-weight:700;color:#fde047;">2024–현재</span><span style="font-size:12px;font-weight:700;margin-left:8px;color:#fde047;">Agentic AI & 멀티모달</span><div style="font-size:11px;opacity:0.6;margin-top:2px;">AI 에이전트가 코드 작성·실행·수정 자동화. 텍스트+이미지+음성+영상 통합 분석.</div></div>
+        </div>
+      </div>
+      <div style="flex:1;">
+        <div class="section-label">아키텍처별 데이터사이언스 활용</div>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:8px;">
+          <div class="concept-card" style="border-left-color:#818cf8;padding:14px;">
+            <div style="font-size:12px;font-weight:700;color:#818cf8;margin-bottom:4px;">CNN — Convolutional Neural Network (합성곱 신경망) <span class="lv lv-m">중급</span></div>
+            <div style="font-size:11px;opacity:0.7;line-height:1.6;">이미지에서 특징 자동 추출. 의료영상 진단, SNS 이미지 분류, 위성사진 토지이용 분석.</div>
+          </div>
+          <div class="concept-card" style="border-left-color:#a5b4fc;padding:14px;">
+            <div style="font-size:12px;font-weight:700;color:#a5b4fc;margin-bottom:4px;">RNN/LSTM — 순환신경망 <span class="lv lv-m">중급</span></div>
+            <div style="font-size:11px;opacity:0.7;line-height:1.6;">순서(시계열·텍스트)를 기억하며 처리. 주가 예측, 번역. Transformer 등장 후 대부분 대체됨.</div>
+          </div>
+          <div class="concept-card" style="border-left-color:#c7d2fe;padding:14px;">
+            <div style="font-size:12px;font-weight:700;color:#c7d2fe;margin-bottom:4px;">Transformer / BERT / GPT <span class="lv lv-m">중급</span></div>
+            <div style="font-size:11px;opacity:0.7;line-height:1.6;">현대 NLP의 표준. 감성분석·분류·요약·번역. Hugging Face에서 사전훈련 모델 바로 사용.</div>
+          </div>
+          <div class="concept-card" style="border-left-color:#6366f1;padding:14px;background:#1a1a3a;">
+            <div style="font-size:12px;font-weight:700;color:#6366f1;margin-bottom:4px;">대규모 언어모델 LLM (Large Language Model) <span class="lv lv-a">고급</span></div>
+            <div style="font-size:11px;opacity:0.7;line-height:1.6;">GPT-4, Claude, Gemini. 수백억 파라미터. RAG(Retrieval-Augmented Generation, 검색증강생성)로 데이터와 결합.</div>
+          </div>
+        </div>
+        <div class="card" style="margin-top:14px;background:#1a1a3a;border:1px solid #6366f144;">
+          <div style="font-size:13px;font-weight:700;color:#6366f1;margin-bottom:8px;">인문사회계열 AI 활용 사례</div>
+          <div style="display:flex;flex-direction:column;gap:4px;">
+            <div style="font-size:11px;opacity:0.8;">뉴스 기사 주제 분류 — NLP + 분류 모델</div>
+            <div style="font-size:11px;opacity:0.8;">소셜미디어 여론·감성 분석 — BERT 파인튜닝</div>
+            <div style="font-size:11px;opacity:0.8;">역사 문서 텍스트 마이닝 — LDA 토픽 모델링</div>
+            <div style="font-size:11px;opacity:0.8;">선거 결과 예측 — 앙상블 분류 모델</div>
+            <div style="font-size:11px;opacity:0.8;">복지 수혜 예측 — 로지스틱 회귀 + SHAP 해석</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pg-num">11 / 20</div>
+</div>
+
+
+<!-- ========== SLIDE 4-3: 시각화 & 스토리텔링 ========== -->
+<div class="slide t8">
+  <div class="slide-header">
+    <div class="slide-num">4-3</div>
+    <div>
+      <div class="slide-title">데이터 시각화 & 스토리텔링</div>
+      <div class="slide-subtitle">Data Visualization &amp; Communication — "좋은 시각화는 복잡한 것을 단순하게 만든다"</div>
+    </div>
+  </div>
+  <div class="slide-body">
+    <div class="grid2" style="margin-top:16px;">
+      <div>
+        <div class="section-label">시각화 설계 원칙</div>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:8px;">
+          <div class="icon-item"><div class="icon-circle" style="background:#3a1b2d;color:#ec4899;font-size:14px;">1</div><div><div style="font-size:13px;font-weight:700;margin-bottom:3px;">명확한 메시지 우선</div><div style="font-size:11px;opacity:0.7;">시각화의 목적을 먼저 정의. "이 차트로 무엇을 전달할 것인가?" 한 문장으로 말할 수 없으면 다시 설계.</div></div></div>
+          <div class="icon-item"><div class="icon-circle" style="background:#3a1b2d;color:#f472b6;font-size:14px;">2</div><div><div style="font-size:13px;font-weight:700;margin-bottom:3px;">데이터-잉크 비율 (Tufte 원칙)</div><div style="font-size:11px;opacity:0.7;">불필요한 장식 제거. 데이터를 나타내는 잉크 비율 최대화. 차트 정크(Chart Junk) 배제.</div></div></div>
+          <div class="icon-item"><div class="icon-circle" style="background:#3a1b2d;color:#ec4899;font-size:14px;">3</div><div><div style="font-size:13px;font-weight:700;margin-bottom:3px;">색상 사용 원칙</div><div style="font-size:11px;opacity:0.7;">범주형: 구분 가능한 질적 팔레트. 순서형: 단색 순차 팔레트. 발산형: 중앙 기준 분기. 색맹 접근성 고려.</div></div></div>
+          <div class="icon-item"><div class="icon-circle" style="background:#3a1b2d;color:#f472b6;font-size:14px;">4</div><div><div style="font-size:13px;font-weight:700;margin-bottom:3px;">데이터 스토리텔링 구조</div><div style="font-size:11px;opacity:0.7;">Context(맥락) → Complication(문제) → Resolution(해결) 구조. 대상 청중에 맞는 수준·언어 선택.</div></div></div>
+        </div>
+        <div class="section-label" style="margin-top:16px;">흔한 시각화 실수</div>
+        <div style="display:flex;flex-direction:column;gap:5px;margin-top:8px;">
+          <div style="font-size:11px;padding:7px 12px;background:#3a1b1b;border-radius:8px;border-left:3px solid #ef4444;">Y축을 0에서 시작하지 않아 과장된 차이 표현</div>
+          <div style="font-size:11px;padding:7px 12px;background:#3a1b1b;border-radius:8px;border-left:3px solid #ef4444;">3D 차트로 비율 왜곡 (3D 파이차트는 절대 금지)</div>
+          <div style="font-size:11px;padding:7px 12px;background:#3a1b1b;border-radius:8px;border-left:3px solid #ef4444;">상관관계를 인과관계처럼 오해하도록 표현</div>
+          <div style="font-size:11px;padding:7px 12px;background:#3a1b1b;border-radius:8px;border-left:3px solid #ef4444;">너무 많은 변수를 하나의 차트에 담아 복잡성 증가</div>
+        </div>
+      </div>
+      <div>
+        <div class="section-label">도구 생태계</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px;">
+          <div class="card" style="border-top:3px solid #ec4899;"><div style="font-size:12px;font-weight:700;color:#ec4899;margin-bottom:8px;">Python 기반</div><div style="font-size:11px;opacity:0.7;line-height:1.8;">Matplotlib (기본)<br>Seaborn (통계 시각화)<br>Plotly (인터랙티브)<br>Altair (선언형)<br>Bokeh (웹 시각화)</div></div>
+          <div class="card" style="border-top:3px solid #f472b6;"><div style="font-size:12px;font-weight:700;color:#f472b6;margin-bottom:8px;">BI 도구</div><div style="font-size:11px;opacity:0.7;line-height:1.8;">Tableau (드래그&드롭)<br>Power BI (MS 생태계)<br>Looker Studio (무료)<br>Apache Superset (오픈소스)</div></div>
+        </div>
+        <div class="section-label" style="margin-top:16px;">대시보드 설계 원칙</div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px;">
+          <div class="card" style="padding:12px;border-left:3px solid #ec4899;"><div style="font-size:12px;font-weight:700;margin-bottom:4px;">F패턴 / Z패턴 레이아웃</div><div style="font-size:11px;opacity:0.7;">시선 흐름에 맞춰 KPI(Key Performance Indicator, 핵심성과지표)를 좌상단에 배치.</div></div>
+          <div class="card" style="padding:12px;border-left:3px solid #f472b6;"><div style="font-size:12px;font-weight:700;margin-bottom:4px;">Gestalt 원칙 적용</div><div style="font-size:11px;opacity:0.7;">근접성·유사성·연속성으로 관련 정보를 시각적으로 그룹화. 인지 부하 최소화.</div></div>
+          <div class="card" style="padding:12px;border-left:3px solid #ec4899;"><div style="font-size:12px;font-weight:700;margin-bottom:4px;">인터랙티브 필터 & 드릴다운</div><div style="font-size:11px;opacity:0.7;">독자가 직접 탐색할 수 있는 인터랙티브 요소로 발견의 즐거움 제공.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pg-num">12 / 20</div>
+</div>
+
+<!-- ========== SLIDE 5-1: 데이터사이언스 윤리 ========== -->
+<div class="slide t5">
+  <div class="slide-header">
+    <div class="slide-num">5-1</div>
+    <div>
+      <div class="slide-title">데이터사이언스 윤리 & 주요 오류 유형</div>
+      <div class="slide-subtitle">Data Science Ethics &amp; Common Pitfalls — "데이터도 틀릴 수 있다"</div>
+    </div>
+  </div>
+  <div class="slide-body">
+    <div class="grid2" style="margin-top:16px;">
+      <div>
+        <div class="section-label">주요 통계·분석 오류 유형</div>
+        <div class="concept-card" style="border-left-color:#ef4444;">
+          <div style="font-size:13px;font-weight:700;color:#ef4444;margin-bottom:6px;">알고리즘 편향 (Algorithmic Bias) <span class="lv lv-b">초급</span></div>
+          <div class="easy">훈련 데이터에 존재하는 사회적 편견이 모델에 그대로 반영되는 현상.<br>예: 특정 인종 얼굴인식 오류율 높음, 채용 AI가 여성 지원자 불이익.</div>
+          <div class="when"><b style="color:#f87171;">해결책:</b> 공정성(Fairness) 지표 측정, 다양한 데이터 수집, 알고리즘 감사(Audit)</div>
+        </div>
+        <div class="concept-card" style="border-left-color:#f87171;margin-top:10px;">
+          <div style="font-size:13px;font-weight:700;color:#f87171;margin-bottom:6px;">p-해킹 / HARKing <span class="lv lv-m">중급</span></div>
+          <div class="easy">p-해킹: p-value가 0.05 이하가 나올 때까지 분석 방법·변수를 바꾸는 행위.<br>HARKing: Hypothesizing After Results Known — 결과를 보고 나서 가설을 만드는 행위.</div>
+          <div class="when"><b style="color:#f87171;">해결책:</b> 사전 등록(Pre-registration), 복제 연구, 다중검정 보정(Bonferroni)</div>
+        </div>
+        <div class="concept-card" style="border-left-color:#fca5a5;margin-top:10px;">
+          <div style="font-size:13px;font-weight:700;color:#fca5a5;margin-bottom:6px;">심슨의 역설 (Simpson's Paradox) <span class="lv lv-m">중급</span></div>
+          <div class="easy">전체 데이터 분석 결과와 하위 그룹별 분석 결과가 반대로 나타나는 현상.<br>예: 전체적으로는 치료법 A가 좋아 보이지만, 남녀 각각 분석하면 B가 더 좋음.</div>
+          <div class="when"><b style="color:#fca5a5;">해결책:</b> 그룹별 층화 분석 필수. 교란변수 통제.</div>
+        </div>
+        <div class="concept-card" style="border-left-color:#ef4444;margin-top:10px;">
+          <div style="font-size:13px;font-weight:700;color:#ef4444;margin-bottom:6px;">확증 편향 (Confirmation Bias) <span class="lv lv-b">초급</span></div>
+          <div class="easy">기존 믿음을 확인하는 데이터만 선택적으로 수집·해석하는 경향.<br>예: "이미 알고 있는 결론"을 뒷받침하는 분석만 보고하는 행위.</div>
+          <div class="when"><b style="color:#f87171;">해결책:</b> 반증 사례 적극 탐색, 외부 검토자 활용</div>
+        </div>
+      </div>
+      <div>
+        <div class="section-label">AI 거버넌스 & 책임있는 AI</div>
+        <div class="concept-card" style="border-left-color:#f59e0b;">
+          <div style="font-size:13px;font-weight:700;color:#f59e0b;margin-bottom:6px;">허위 시각화 (Misleading Visualization)</div>
+          <div class="easy">데이터를 의도적으로 왜곡해 오해를 유발하는 시각화.<br>잘린 축, 선택적 기간, 3D 효과 등.</div>
+          <div class="when"><b style="color:#fbbf24;">예시:</b> Y축이 0이 아닌 곳에서 시작해 작은 차이를 크게 보이게 함</div>
+        </div>
+        <div class="concept-card" style="border-left-color:#22c55e;margin-top:10px;">
+          <div style="font-size:13px;font-weight:700;color:#22c55e;margin-bottom:6px;">설명가능성 & 투명성 요구 (XAI)</div>
+          <div class="easy">EU AI법(AI Act): 고위험 AI는 의사결정 근거 설명 의무화.<br>블랙박스 모델(딥러닝)의 결정 과정을 설명할 수 있어야 함.</div>
+          <div class="when"><b style="color:#4ade80;">도구:</b> SHAP, LIME, Grad-CAM (이미지 설명)</div>
+        </div>
+        <div class="section-label" style="margin-top:16px;">책임있는 AI (Responsible AI) 7대 원칙</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;">
+          <div style="padding:8px 12px;background:#1c3a0d;border-radius:8px;font-size:11px;color:#86efac;font-weight:600;">공정성 (Fairness)</div>
+          <div style="padding:8px 12px;background:#0d2137;border-radius:8px;font-size:11px;color:#60a5fa;font-weight:600;">신뢰성 (Reliability)</div>
+          <div style="padding:8px 12px;background:#3a1b1b;border-radius:8px;font-size:11px;color:#fca5a5;font-weight:600;">안전성 (Safety)</div>
+          <div style="padding:8px 12px;background:#2d1b4e;border-radius:8px;font-size:11px;color:#c084fc;font-weight:600;">투명성 (Transparency)</div>
+          <div style="padding:8px 12px;background:#1b3a2d;border-radius:8px;font-size:11px;color:#4ade80;font-weight:600;">포용성 (Inclusiveness)</div>
+          <div style="padding:8px 12px;background:#3a2d1b;border-radius:8px;font-size:11px;color:#fbbf24;font-weight:600;">책임 (Accountability)</div>
+          <div style="padding:8px 12px;background:#1b2d3a;border-radius:8px;font-size:11px;color:#67e8f9;font-weight:600;">개인정보 (Privacy)</div>
+        </div>
+        <div class="card" style="margin-top:14px;background:#3a1b1b44;border:1px solid #ef444444;">
+          <div style="font-size:13px;font-weight:700;color:#ef4444;margin-bottom:6px;">개인정보보호법 & 데이터 윤리 체크</div>
+          <div style="display:flex;flex-direction:column;gap:4px;">
+            <div style="font-size:11px;opacity:0.8;">동의 없이 개인식별 데이터 수집·활용 금지</div>
+            <div style="font-size:11px;opacity:0.8;">수집 목적 외 데이터 사용 금지 (목적 구속성)</div>
+            <div style="font-size:11px;opacity:0.8;">민감정보(인종·종교·건강·성적 지향) 처리 시 별도 동의</div>
+            <div style="font-size:11px;opacity:0.8;">연구 전 IRB(Institutional Review Board, 기관생명윤리위원회) 심의</div>
+          </div>
+        </div>
+        <div class="section-label" style="margin-top:16px;">AI 시대의 신규 윤리 이슈</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px;">
+          <div class="concept-card" style="border-left-color:#f97316;">
+            <div style="font-size:13px;font-weight:700;color:#f97316;margin-bottom:6px;">AI & 정신건강 (Mental Health)</div>
+            <div class="easy">SNS 알고리즘·챗봇·AI 상담 서비스가 정신건강에 미치는 영향이 주요 연구 주제로 부상. 알고리즘이 우울·불안 콘텐츠를 증폭시키는 필터버블 문제, AI 감성분석을 통한 자살예방 조기탐지 가능성과 윤리적 한계가 함께 논의됨.</div>
+            <div class="when"><b style="color:#fb923c;">핵심 질문:</b> AI는 정신건강 보조도구가 될 수 있는가? 데이터 수집 동의·개인정보 보호는 어떻게 보장할 것인가?</div>
+          </div>
+          <div class="concept-card" style="border-left-color:#dc2626;">
+            <div style="font-size:13px;font-weight:700;color:#dc2626;margin-bottom:6px;">딥페이크 (Deepfake) & 합성 미디어</div>
+            <div class="easy">딥러닝 기반 생성모델(GAN, Diffusion)로 만든 가짜 이미지·동영상·음성. 허위정보 확산, 非동의 성적 합성물, 선거 개입 등에 악용. 탐지 기술(딥페이크 탐지 AI)과 입법(디지털성범죄처벌법 강화)이 동시 진행 중.</div>
+            <div class="when"><b style="color:#f87171;">데이터 과학자의 역할:</b> 생성 모델의 책임있는 배포 + 탐지 알고리즘 개발 + 윤리 가이드라인 수립</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pg-num">13 / 20</div>
+</div>
+
+<!-- ========== SLIDE 5-2: AI 에이전트 & 바이브코딩 ========== -->
+<div class="slide t12">
+  <div class="slide-header">
+    <div class="slide-num">5-2</div>
+    <div>
+      <div class="slide-title">AI 에이전트 & 바이브코딩이 바꾸는 데이터사이언스</div>
+      <div class="slide-subtitle">Agentic AI &amp; Vibe Coding — 2024년 이후 가장 큰 패러다임 전환</div>
+    </div>
+  </div>
+  <div class="slide-body">
+    <div class="grid2" style="margin-top:16px;">
+      <div>
+        <div class="section-label">AI 에이전트란?</div>
+        <div class="concept-card" style="border-left-color:#d946ef;">
+          <div style="font-size:13px;font-weight:700;color:#d946ef;margin-bottom:6px;">AI 에이전트 (Agentic AI)</div>
+          <div class="easy">사람의 단계별 지시 없이 스스로 계획을 세우고, 도구를 사용하고, 결과를 검증하며 목표를 달성하는 AI.<br>예: "이 CSV를 분석해서 인사이트를 담은 보고서를 만들어줘" → AI가 코드 작성·실행·시각화·보고서 작성을 자동으로 수행.</div>
+          <div class="when">
+            <b style="color:#e879f9;">핵심 구성요소:</b><br>
+            계획(Planning) → 도구 사용(Tool Use) → 메모리(Memory) → 자기 검증(Self-verification)
+          </div>
+        </div>
+        <div class="concept-card" style="border-left-color:#e879f9;margin-top:12px;">
+          <div style="font-size:13px;font-weight:700;color:#e879f9;margin-bottom:6px;">바이브코딩 (Vibe Coding)</div>
+          <div class="easy">자연어로 원하는 것을 설명하면 AI가 코드를 작성해주는 방식으로 프로그래밍하는 새로운 패러다임.<br>코드를 직접 작성하는 대신 AI와 대화하며 의도(Vibe)를 전달.</div>
+          <div class="when">
+            <b style="color:#e879f9;">도구:</b> GitHub Copilot, Claude, ChatGPT Code Interpreter, Cursor, Replit AI<br>
+            <b style="color:#fbbf24;">의미:</b> 프로그래밍 문법 지식이 없어도 데이터 분석 자동화 가능 → 데이터사이언스 민주화
+          </div>
+        </div>
+        <div class="concept-card" style="border-left-color:#c026d3;margin-top:12px;">
+          <div style="font-size:13px;font-weight:700;color:#c026d3;margin-bottom:6px;">Text-to-SQL / NL2Data</div>
+          <div class="easy">자연어로 데이터베이스를 조회하는 기술.<br>"지난 달 가장 많이 팔린 상품 10개는?" → SQL 자동 생성 → 결과 반환.</div>
+          <div class="when"><b style="color:#e879f9;">의미:</b> 비전문가도 데이터에 직접 접근 가능. 데이터 민주화의 실현.</div>
+        </div>
+      </div>
+      <div>
+        <div class="section-label">이 시대 데이터사이언티스트의 역할</div>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:8px;">
+          <div class="role-card" style="border-top-color:#d946ef;">
+            <div style="font-size:13px;font-weight:700;color:#d946ef;margin-bottom:6px;">문제 정의자 & 도메인 전문가</div>
+            <div style="font-size:11px;opacity:0.75;line-height:1.6;">AI는 코드를 쓸 수 있지만 "무엇을 물어야 하는가"는 사람이 정해야 함.<br>인문사회 도메인 지식으로 올바른 질문을 설계하고 분석 방향 결정.</div>
+          </div>
+          <div class="role-card" style="border-top-color:#e879f9;">
+            <div style="font-size:13px;font-weight:700;color:#e879f9;margin-bottom:6px;">AI 결과 검증자 & 품질 관리자</div>
+            <div style="font-size:11px;opacity:0.75;line-height:1.6;">AI가 생성한 코드·분석·시각화의 오류를 발견하고 수정.<br>"AI는 자신있게 틀릴 수 있다(Hallucination)" — 통계 지식으로 결과의 타당성 검증.</div>
+          </div>
+          <div class="role-card" style="border-top-color:#c026d3;">
+            <div style="font-size:13px;font-weight:700;color:#c026d3;margin-bottom:6px;">프롬프트 엔지니어 & AI 오케스트레이터</div>
+            <div style="font-size:11px;opacity:0.75;line-height:1.6;">AI 에이전트에게 효과적으로 지시하는 프롬프트 설계.<br>여러 AI 에이전트와 도구를 조합한 분석 파이프라인 설계.</div>
+          </div>
+          <div class="role-card" style="border-top-color:#a21caf;">
+            <div style="font-size:13px;font-weight:700;color:#a21caf;margin-bottom:6px;">윤리·편향 감시자</div>
+            <div style="font-size:11px;opacity:0.75;line-height:1.6;">AI가 만든 분석이 특정 집단에 불이익을 주지 않는지 감시.<br>알고리즘 공정성 검토, 개인정보 보호 가드레일 설계.</div>
+          </div>
+          <div class="role-card" style="border-top-color:#86198f;">
+            <div style="font-size:13px;font-weight:700;color:#86198f;margin-bottom:6px;">커뮤니케이터 & 스토리텔러</div>
+            <div style="font-size:11px;opacity:0.75;line-height:1.6;">AI가 만든 분석 결과를 의사결정자·대중이 이해할 수 있게 설명.<br>인문사회 맥락에서의 해석과 정책적 함의 제공.</div>
+          </div>
+        </div>
+        <div class="card" style="margin-top:14px;background:#2d1040;border:1px solid #d946ef44;">
+          <div style="font-size:12px;font-weight:700;color:#d946ef;margin-bottom:6px;">핵심 메시지</div>
+          <div style="font-size:12px;opacity:0.85;line-height:1.7;">"코딩을 AI가 대신하는 시대에, 데이터사이언티스트의 가치는<br><b style="color:#e879f9;">무엇을 분석할지 알고, 결과가 맞는지 판단하며, 의미를 해석하는 능력</b>에 있다."<br>인문사회계열의 비판적 사고, 사회 이해, 맥락 해석 능력이 핵심 경쟁력.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pg-num">14 / 20</div>
+</div>
+
+<!-- ========== SLIDE 5-3: RAG ========== -->
+<div class="slide t12">
+  <div class="slide-header">
+    <div class="slide-num">5-3</div>
+    <div>
+      <div class="slide-title">RAG — Retrieval-Augmented Generation (검색 증강 생성)</div>
+      <div class="slide-subtitle">LLM의 한계를 넘는 핵심 아키텍처 — "모르면 찾아서 답한다"</div>
+    </div>
+  </div>
+  <div class="slide-body">
+    <div class="grid2" style="margin-top:16px;">
+      <div>
+        <div class="section-label">개념 & 작동 구조</div>
+        <div class="concept-card" style="border-left-color:#818cf8;margin-top:10px;">
+          <div style="font-size:13px;font-weight:700;color:#818cf8;margin-bottom:6px;">RAG란 무엇인가?</div>
+          <div class="easy">LLM(Large Language Model)은 학습된 데이터까지만 알고, 최신 정보·내부 문서는 모른다. RAG는 질문을 받으면 ① 외부 데이터베이스에서 관련 문서를 <b>검색(Retrieve)</b>하고 ② 그 내용을 맥락으로 LLM에 전달해 ③ <b>사실 기반 답변을 생성(Generate)</b>하는 방식이다.</div>
+          <div class="when"><b style="color:#a5b4fc;">한 줄 요약:</b> 인터넷 검색 + AI 답변 생성을 결합한 구조 — Hallucination(환각) 문제를 줄이는 핵심 기법</div>
+        </div>
+        <!-- RAG 개념도 -->
+        <div style="margin-top:14px;background:#1a1240;border-radius:12px;padding:16px;border:1px solid #4f46e544;">
+          <div style="font-size:11px;font-weight:700;color:#818cf8;margin-bottom:10px;text-align:center;">RAG 파이프라인 개념도</div>
+          <div style="display:flex;align-items:center;gap:6px;justify-content:center;flex-wrap:wrap;">
+            <div style="padding:8px 12px;background:#312e81;border-radius:8px;font-size:10px;text-align:center;min-width:72px;"><div style="color:#c7d2fe;font-weight:700;">사용자 질문</div><div style="color:#a5b4fc;font-size:9px;margin-top:2px;">Query</div></div>
+            <div style="font-size:16px;color:#818cf8;">→</div>
+            <div style="padding:8px 12px;background:#1e1b4b;border-radius:8px;font-size:10px;text-align:center;min-width:72px;border:1px solid #6366f1;"><div style="color:#a5b4fc;font-weight:700;">임베딩</div><div style="color:#818cf8;font-size:9px;margin-top:2px;">벡터 변환</div></div>
+            <div style="font-size:16px;color:#818cf8;">→</div>
+            <div style="padding:8px 12px;background:#1e1b4b;border-radius:8px;font-size:10px;text-align:center;min-width:72px;border:1px solid #6366f1;"><div style="color:#a5b4fc;font-weight:700;">벡터DB 검색</div><div style="color:#818cf8;font-size:9px;margin-top:2px;">유사 문서 Retrieve</div></div>
+            <div style="font-size:16px;color:#818cf8;">→</div>
+            <div style="padding:8px 12px;background:#1e1b4b;border-radius:8px;font-size:10px;text-align:center;min-width:72px;border:1px solid #6366f1;"><div style="color:#a5b4fc;font-weight:700;">LLM 생성</div><div style="color:#818cf8;font-size:9px;margin-top:2px;">문맥 기반 답변</div></div>
+            <div style="font-size:16px;color:#818cf8;">→</div>
+            <div style="padding:8px 12px;background:#312e81;border-radius:8px;font-size:10px;text-align:center;min-width:72px;"><div style="color:#c7d2fe;font-weight:700;">최종 답변</div><div style="color:#a5b4fc;font-size:9px;margin-top:2px;">출처 포함</div></div>
+          </div>
+          <div style="margin-top:10px;display:flex;gap:8px;justify-content:center;">
+            <div style="padding:4px 10px;background:#0f0c29;border-radius:6px;font-size:9px;color:#818cf8;">① Indexing: 문서 → 청크 → 벡터 저장</div>
+            <div style="padding:4px 10px;background:#0f0c29;border-radius:6px;font-size:9px;color:#818cf8;">② Retrieval: 질문 유사도로 상위 k개 검색</div>
+            <div style="padding:4px 10px;background:#0f0c29;border-radius:6px;font-size:9px;color:#818cf8;">③ Generation: Context + Query → 답변</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="section-label">핵심 구성요소 & 현재 기술동향</div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:10px;">
+          <div class="card" style="border-top:3px solid #6366f1;padding:12px;">
+            <div style="font-size:12px;font-weight:700;color:#818cf8;margin-bottom:5px;">벡터 데이터베이스 (Vector DB)</div>
+            <div style="font-size:11px;opacity:0.75;line-height:1.6;">텍스트를 고차원 벡터로 변환해 의미 기반 유사도 검색. 주요 도구: <b>Pinecone, ChromaDB, Weaviate, FAISS</b>. "사과"와 "과일"이 유사하다는 의미를 숫자로 표현.</div>
+          </div>
+          <div class="card" style="border-top:3px solid #8b5cf6;padding:12px;">
+            <div style="font-size:12px;font-weight:700;color:#a78bfa;margin-bottom:5px;">임베딩 모델 (Embedding)</div>
+            <div style="font-size:11px;opacity:0.75;line-height:1.6;">텍스트 → 수치 벡터 변환. <b>OpenAI text-embedding, SBERT, BGE</b> 등. 한국어는 <b>KR-SBERT</b>, <b>Upstage Solar Embeddings</b> 활용.</div>
+          </div>
+          <div class="card" style="border-top:3px solid #a855f7;padding:12px;">
+            <div style="font-size:12px;font-weight:700;color:#c084fc;margin-bottom:5px;">2024~2025 기술 트렌드</div>
+            <div style="font-size:11px;opacity:0.75;line-height:1.6;">
+              <b style="color:#d8b4fe;">Hybrid RAG:</b> 키워드 검색 + 벡터 검색 결합<br>
+              <b style="color:#d8b4fe;">GraphRAG:</b> 지식그래프 + RAG (MS 오픈소스)<br>
+              <b style="color:#d8b4fe;">Agentic RAG:</b> AI 에이전트가 검색 전략 자율 결정<br>
+              <b style="color:#d8b4fe;">Long-context LLM:</b> Gemini 1M+ 토큰 — RAG 필요성 재논의
+            </div>
+          </div>
+          <div class="card" style="border-top:3px solid #ec4899;padding:12px;">
+            <div style="font-size:12px;font-weight:700;color:#f472b6;margin-bottom:5px;">인문사회 활용 예시</div>
+            <div style="font-size:11px;opacity:0.75;line-height:1.6;">법률 문서 검색·요약 / 학술논문 기반 Q&A / 정책 데이터베이스 질의 / 역사 아카이브 탐색 — 특정 도메인 지식 기반 챗봇 구축에 활용</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pg-num">15 / 20</div>
+</div>
+
+<!-- ========== SLIDE 5-4: AI Agent ========== -->
+<div class="slide" style="background:linear-gradient(160deg,#0a0a1a 0%,#0d1a2d 50%,#1a0d2d 100%);">
+  <div class="slide-header">
+    <div class="slide-num">5-4</div>
+    <div>
+      <div class="slide-title">AI 에이전트 (AI Agent) — 자율 실행 AI</div>
+      <div class="slide-subtitle">단순 답변을 넘어 계획·실행·반성하는 AI — "AI가 스스로 생각하고 행동한다"</div>
+    </div>
+  </div>
+  <div class="slide-body">
+    <div class="grid2" style="margin-top:16px;">
+      <div>
+        <div class="section-label">개념 & 구조</div>
+        <div class="concept-card" style="border-left-color:#06b6d4;margin-top:10px;">
+          <div style="font-size:13px;font-weight:700;color:#06b6d4;margin-bottom:6px;">AI 에이전트란?</div>
+          <div class="easy">일반 LLM은 질문에 답만 한다. AI 에이전트는 <b>목표를 받으면 스스로 계획(Plan)</b>을 세우고, 웹 검색·코드 실행·API 호출 등 <b>도구(Tool)를 사용</b>하며, 결과를 보고 <b>다음 행동을 스스로 결정</b>한다. 마치 비서가 여러 작업을 순서대로 처리하는 것처럼.</div>
+          <div class="when"><b style="color:#67e8f9;">핵심 루프:</b> 인식(Perceive) → 계획(Plan) → 행동(Act) → 관찰(Observe) → 반복</div>
+        </div>
+        <!-- AI Agent 개념도 -->
+        <div style="margin-top:14px;background:#040d1a;border-radius:12px;padding:16px;border:1px solid #0891b244;">
+          <div style="font-size:11px;font-weight:700;color:#06b6d4;margin-bottom:10px;text-align:center;">AI 에이전트 아키텍처</div>
+          <div style="display:flex;gap:8px;justify-content:center;align-items:flex-start;flex-wrap:wrap;">
+            <div style="padding:10px 12px;background:#0c1a2e;border-radius:10px;font-size:10px;text-align:center;min-width:80px;border:1px solid #0891b2;">
+              <div style="color:#22d3ee;font-weight:700;margin-bottom:4px;">목표 입력</div>
+              <div style="color:#67e8f9;font-size:9px;">User Goal</div>
+            </div>
+            <div style="font-size:18px;color:#06b6d4;align-self:center;">→</div>
+            <div style="padding:10px 12px;background:#0c2a1e;border-radius:10px;font-size:10px;text-align:center;min-width:80px;border:2px solid #06b6d4;">
+              <div style="color:#22d3ee;font-weight:700;margin-bottom:4px;">LLM 코어</div>
+              <div style="color:#67e8f9;font-size:9px;">추론·계획·판단</div>
+            </div>
+            <div style="font-size:18px;color:#06b6d4;align-self:center;">⇄</div>
+            <div style="display:flex;flex-direction:column;gap:5px;">
+              <div style="padding:6px 10px;background:#0c1a2e;border-radius:6px;font-size:9px;color:#67e8f9;border:1px solid #0891b244;">웹 검색 Tool</div>
+              <div style="padding:6px 10px;background:#0c1a2e;border-radius:6px;font-size:9px;color:#67e8f9;border:1px solid #0891b244;">코드 실행 Tool</div>
+              <div style="padding:6px 10px;background:#0c1a2e;border-radius:6px;font-size:9px;color:#67e8f9;border:1px solid #0891b244;">API 호출 Tool</div>
+              <div style="padding:6px 10px;background:#0c1a2e;border-radius:6px;font-size:9px;color:#67e8f9;border:1px solid #0891b244;">파일 조작 Tool</div>
+            </div>
+            <div style="font-size:18px;color:#06b6d4;align-self:center;">→</div>
+            <div style="padding:10px 12px;background:#0c1a2e;border-radius:10px;font-size:10px;text-align:center;min-width:80px;border:1px solid #0891b2;">
+              <div style="color:#22d3ee;font-weight:700;margin-bottom:4px;">메모리</div>
+              <div style="color:#67e8f9;font-size:9px;">단기·장기 기억</div>
+            </div>
+          </div>
+          <div style="text-align:center;margin-top:8px;font-size:9px;color:#0891b2;opacity:0.7;">중간 결과를 관찰(Observe) → 다음 행동 재계획 (ReAct 루프)</div>
+        </div>
+      </div>
+      <div>
+        <div class="section-label">주요 프레임워크 & 기술동향</div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:10px;">
+          <div class="card" style="border-top:3px solid #06b6d4;padding:12px;">
+            <div style="font-size:12px;font-weight:700;color:#22d3ee;margin-bottom:5px;">주요 에이전트 프레임워크</div>
+            <div style="font-size:11px;opacity:0.75;line-height:1.7;">
+              <b style="color:#67e8f9;">LangChain / LangGraph:</b> 에이전트 파이프라인 구축 표준<br>
+              <b style="color:#67e8f9;">AutoGen (MS):</b> 멀티에이전트 협업 프레임워크<br>
+              <b style="color:#67e8f9;">CrewAI:</b> 역할 기반 에이전트 팀 조율<br>
+              <b style="color:#67e8f9;">Claude Agents SDK:</b> Anthropic 공식 에이전트 SDK
+            </div>
+          </div>
+          <div class="card" style="border-top:3px solid #0891b2;padding:12px;">
+            <div style="font-size:12px;font-weight:700;color:#06b6d4;margin-bottom:5px;">에이전트 유형</div>
+            <div style="font-size:11px;opacity:0.75;line-height:1.6;">
+              <b style="color:#67e8f9;">ReAct 에이전트:</b> 추론-행동을 반복하며 문제 해결<br>
+              <b style="color:#67e8f9;">멀티에이전트:</b> 여러 AI가 협업·분업 (연구자/작성자/검토자)<br>
+              <b style="color:#67e8f9;">Computer Use:</b> AI가 직접 화면을 보고 컴퓨터 조작
+            </div>
+          </div>
+          <div class="card" style="border-top:3px solid #0e7490;padding:12px;">
+            <div style="font-size:12px;font-weight:700;color:#22d3ee;margin-bottom:5px;">2025 핵심 트렌드</div>
+            <div style="font-size:11px;opacity:0.75;line-height:1.6;">
+              <b style="color:#a5f3fc;">MCP (Model Context Protocol):</b> AI와 외부 도구를 연결하는 표준 인터페이스 (Anthropic 제안)<br>
+              <b style="color:#a5f3fc;">Agentic RAG:</b> 에이전트가 검색 전략을 스스로 결정<br>
+              <b style="color:#a5f3fc;">자율 데이터분석:</b> 목표만 주면 데이터 수집→분석→보고서 자동 생성
+            </div>
+          </div>
+          <div class="card" style="background:#041a14;border:1px solid #06b6d444;padding:12px;">
+            <div style="font-size:12px;font-weight:700;color:#06b6d4;margin-bottom:5px;">데이터과학자의 역할 변화</div>
+            <div style="font-size:11px;opacity:0.8;line-height:1.6;">"<b style="color:#22d3ee;">에이전트를 설계하고 감독</b>하는 오케스트레이터" — 코드를 직접 짜는 것보다 에이전트에게 올바른 목표를 설정하고, 결과를 검증하며, 윤리·안전 가이드라인을 적용하는 능력이 핵심 역량.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="pg-num">16 / 20</div>
+</div>
+
+<!-- ========== SLIDE 6-1: 텍스트 마이닝 & NLP ========== -->
+<div class="slide t2">
+  <div class="slide-header">
+    <div class="slide-num">6-1</div>
+    <div>
+      <div class="slide-title">텍스트 마이닝 & NLP — 언어 데이터 분석</div>
+      <div class="slide-subtitle">Text Mining &amp; Natural Language Processing — "언어 속에 숨겨진 패턴을 수치로 변환한다"</div>
+    </div>
+  </div>
+  <div class="slide-body">
+    <div class="grid2" style="margin-top:16px;">
+      <div>
+        <div class="section-label">텍스트 처리 파이프라인</div>
+        <div style="display:flex;flex-direction:column;gap:7px;margin-top:10px;">
+          <div style="padding:10px 14px;background:#1a0f30;border-radius:10px;border-left:4px solid #a855f7;display:flex;gap:10px;align-items:center;">
+            <div style="min-width:28px;height:28px;border-radius:50%;background:#a855f7;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:#fff;flex-shrink:0;">01</div>
+            <div><div style="font-size:12px;font-weight:700;color:#c084fc;">수집 (Crawling / API)</div><div style="font-size:11px;opacity:0.7;">SNS, 뉴스, 리뷰, 논문 등 텍스트 데이터 수집</div></div>
+          </div>
+          <div style="padding:10px 14px;background:#1a0f30;border-radius:10px;border-left:4px solid #8b5cf6;display:flex;gap:10px;align-items:center;">
+            <div style="min-width:28px;height:28px;border-radius:50%;background:#8b5cf6;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:#fff;flex-shrink:0;">02</div>
+            <div><div style="font-size:12px;font-weight:700;color:#a78bfa;">전처리 (Preprocessing)</div><div style="font-size:11px;opacity:0.7;">소문자 변환, 특수문자 제거, 불용어(Stopword) 제거</div></div>
+          </div>
+          <div style="padding:10px 14px;background:#1a0f30;border-radius:10px;border-left:4px solid #7c3aed;display:flex;gap:10px;align-items:center;">
+            <div style="min-width:28px;height:28px;border-radius:50%;background:#7c3aed;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:#fff;flex-shrink:0;">03</div>
+            <div><div style="font-size:12px;font-weight:700;color:#8b5cf6;">형태소 분석 (Tokenization)</div><div style="font-size:11px;opacity:0.7;">KoNLPy (한국어): Okt, Mecab, Komoran — 명사·동사·형용사 추출</div></div>
+          </div>
+          <div style="padding:10px 14px;background:#1a0f30;border-radius:10px;border-left:4px solid #6d28d9;display:flex;gap:10px;align-items:center;">
+            <div style="min-width:28px;height:28px;border-radius:50%;background:#6d28d9;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:#fff;flex-shrink:0;">04</div>
+            <div><div style="font-size:12px;font-weight:700;color:#7c3aed;">수치화 (Vectorization)</div><div style="font-size:11px;opacity:0.7;">TF-IDF, Word2Vec, BERT 임베딩으로 텍스트를 벡터로 변환</div></div>
+          </div>
+          <div style="padding:10px 14px;background:#1a0f30;border-radius:10px;border-left:4px solid #5b21b6;display:flex;gap:10px;align-items:center;">
+            <div style="min-width:28px;height:28px;border-radius:50%;background:#5b21b6;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:#fff;flex-shrink:0;">05</div>
+            <div><div style="font-size:12px;font-weight:700;color:#6d28d9;">분석·모델링</div><div style="font-size:11px;opacity:0.7;">감성분석, 토픽 모델링, 텍스트 분류, 개체명 인식(NER)</div></div>
+          </div>
+        </div>
+        <div class="code-box" style="margin-top:14px;font-size:11px;">
+<span class="code-cm"># 한국어 형태소 분석</span>
+<span class="code-kw">from</span> <span class="code-var">konlpy.tag</span> <span class="code-kw">import</span> <span class="code-var">Okt</span>
+<span class="code-var">okt</span> = <span class="code-var">Okt</span>()
+<span class="code-var">nouns</span> = <span class="code-var">okt</span>.<span class="code-fn">nouns</span>(<span class="code-str">"데이터사이언스는 미래 직업이다"</span>)
+<span class="code-cm"># TF-IDF 벡터화</span>
+<span class="code-kw">from</span> <span class="code-var">sklearn.feature_extraction.text</span> <span class="code-kw">import</span> <span class="code-var">TfidfVectorizer</span>
+<span class="code-var">tfidf</span> = <span class="code-var">TfidfVectorizer</span>()
+<span class="code-var">X</span> = <span class="code-var">tfidf</span>.<span class="code-fn">fit_transform</span>(<span class="code-var">corpus</span>)
+        </div>
+      </div>
+      <div>
+        <div class="section-label">주요 NLP 기법</div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:10px;">
+          <div class="concept-card" style="border-left-color:#a855f7;">
+            <div style="font-size:12px;font-weight:700;color:#c084fc;margin-bottom:5px;">TF-IDF <span class="lv lv-b">초급</span></div>
+            <div class="easy">TF = Term Frequency (단어 빈도), IDF = Inverse Document Frequency (역문서빈도). 많이 나오면서도 해당 문서에서만 특이하게 나오는 단어가 중요하다는 원리. 키워드 추출, 문서 유사도 계산.</div>
+            <div class="abbr-note">TF-IDF = Term Frequency-Inverse Document Frequency</div>
+          </div>
+          <div class="concept-card" style="border-left-color:#7c3aed;">
+            <div style="font-size:12px;font-weight:700;color:#a78bfa;margin-bottom:5px;">LDA 토픽 모델링 <span class="lv lv-m">중급</span></div>
+            <div class="easy">문서 집합에서 숨겨진 토픽(주제)을 자동으로 발견. 수백 개의 뉴스 기사에서 자동으로 "경제", "정치", "문화" 토픽을 추출. 인문사회 연구에 특히 유용.</div>
+            <div class="abbr-note">LDA = Latent Dirichlet Allocation (잠재 디리클레 할당)</div>
+          </div>
+          <div class="concept-card" style="border-left-color:#6d28d9;">
+            <div style="font-size:12px;font-weight:700;color:#8b5cf6;margin-bottom:5px;">감성분석 (Sentiment Analysis) <span class="lv lv-b">초급</span></div>
+            <div class="easy">텍스트에서 긍정/부정/중립 감성을 자동 분류. 리뷰 분석, 여론조사, SNS 모니터링. 사전 기반(KNU 한국어 감성사전) vs 딥러닝 기반(KoBERT) 방식.</div>
+          </div>
+          <div class="concept-card" style="border-left-color:#5b21b6;">
+            <div style="font-size:12px;font-weight:700;color:#7c3aed;margin-bottom:5px;">BERT & 트랜스포머 <span class="lv lv-a">고급</span></div>
+            <div class="easy">양방향 문맥 이해로 문장 전체 의미를 파악. 한국어 특화: KoBERT, KoELECTRA. 한국어 BERT 기반 감성분석은 Hugging Face에서 바로 사용 가능.</div>
+            <div class="abbr-note">BERT = Bidirectional Encoder Representations from Transformers</div>
+          </div>
+          <div class="card" style="border-top:3px solid #6d28d9;padding:12px;">
+            <div style="font-size:11px;font-weight:700;color:#a855f7;margin-bottom:4px;">인문사회 활용 예시</div>
+            <div style="font-size:10px;opacity:0.75;line-height:1.7;">역사 문서 텍스트 마이닝 — LDA 토픽 모델링<br>SNS 여론 감성분석 — 사회현상 연구<br>언론 기사 편향 분석 — 미디어 연구<br>정책 문서 키워드 트렌드 — 공공정책 연구</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="pg-num">17 / 20</div>
+</div>
+
+<!-- ========== SLIDE 6-2: 공간데이터 분석 ========== -->
+<div class="slide t3">
+  <div class="slide-header">
+    <div class="slide-num">6-2</div>
+    <div>
+      <div class="slide-title">공간데이터 분석 (Spatial Data Analysis)</div>
+      <div class="slide-subtitle">GIS &amp; Geospatial Analytics — "위치 정보가 담긴 데이터로 세상을 읽는 방법"</div>
+    </div>
+  </div>
+  <div class="slide-body">
+    <div class="grid2" style="margin-top:16px;">
+      <div>
+        <div class="section-label">공간데이터란?</div>
+        <div class="concept-card" style="border-left-color:#22c55e;margin-top:10px;">
+          <div style="font-size:13px;font-weight:700;color:#22c55e;margin-bottom:6px;">정의</div>
+          <div class="easy">지리적 위치(위도·경도)나 공간 관계를 포함하는 데이터. 지도, GPS 트랙, 주소, 행정구역 경계 등. GIS(Geographic Information System) 도구로 분석하며, "어디서 무슨 일이 일어나는가?"에 답한다.</div>
+          <div class="abbr-note">GIS = Geographic Information System (지리정보시스템)</div>
+        </div>
+        <div class="section-label" style="margin-top:14px;">공간 분석 주요 기법</div>
+        <div style="display:flex;flex-direction:column;gap:7px;margin-top:8px;">
+          <div class="geo-step"><div style="font-size:12px;font-weight:700;color:#4ade80;margin-bottom:3px;">지도 시각화 (Choropleth Map)</div><div style="font-size:11px;opacity:0.75;">행정구역별 데이터를 색상 강도로 표현. 시군구 인구, 소득, 범죄률 시각화.</div></div>
+          <div class="geo-step"><div style="font-size:12px;font-weight:700;color:#4ade80;margin-bottom:3px;">공간 클러스터링</div><div style="font-size:11px;opacity:0.75;">지리적으로 밀집된 패턴 발견. 핵스팟 분석(Hot Spot), DBSCAN 활용.</div></div>
+          <div class="geo-step"><div style="font-size:12px;font-weight:700;color:#4ade80;margin-bottom:3px;">네트워크 분석</div><div style="font-size:11px;opacity:0.75;">도로망, 교통 흐름, 사회적 연결망 분석. 최단경로, 접근성 계산.</div></div>
+          <div class="geo-step"><div style="font-size:12px;font-weight:700;color:#4ade80;margin-bottom:3px;">공간 자기상관 (Moran's I)</div><div style="font-size:11px;opacity:0.75;">지리적으로 인접한 지역끼리 유사한 값을 가지는지 측정. 공간 의존성 검증.</div></div>
+        </div>
+      </div>
+      <div>
+        <div class="section-label">Python 공간분석 도구</div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:10px;">
+          <div class="card" style="border-top:3px solid #22c55e;padding:12px;">
+            <div style="font-size:12px;font-weight:700;color:#4ade80;margin-bottom:5px;">Folium — 인터랙티브 지도</div>
+            <div style="font-size:11px;opacity:0.75;line-height:1.5;">Leaflet.js 기반 웹 지도 생성. 마커, 히트맵, 클로로플레스 맵. 결과를 HTML로 바로 저장·공유 가능.</div>
+          </div>
+          <div class="card" style="border-top:3px solid #16a34a;padding:12px;">
+            <div style="font-size:12px;font-weight:700;color:#86efac;margin-bottom:5px;">GeoPandas — 공간 데이터프레임</div>
+            <div style="font-size:11px;opacity:0.75;line-height:1.5;">Shapefile, GeoJSON 읽기·분석·시각화. 공간 조인, 버퍼 분석, 면적 계산 등 GIS 연산을 Pandas처럼 수행.</div>
+          </div>
+          <div class="card" style="border-top:3px solid #15803d;padding:12px;">
+            <div style="font-size:12px;font-weight:700;color:#4ade80;margin-bottom:5px;">공공 공간데이터 소스</div>
+            <div style="font-size:11px;opacity:0.75;line-height:1.7;">국토정보플랫폼 (V-World)<br>공공데이터포털 (행정구역 GeoJSON)<br>통계청 통계지리정보서비스 (SGIS)<br>OpenStreetMap (전세계 무료 지도)</div>
+          </div>
+        </div>
+        <div class="code-box" style="margin-top:14px;font-size:11px;">
+<span class="code-kw">import</span> <span class="code-var">folium</span>
+<span class="code-cm"># 서울 중심 지도 생성</span>
+<span class="code-var">m</span> = <span class="code-var">folium</span>.<span class="code-fn">Map</span>(<span class="code-var">location</span>=[<span class="code-num">37.5665</span>, <span class="code-num">126.978</span>], <span class="code-var">zoom_start</span>=<span class="code-num">11</span>)
+<span class="code-cm"># 클로로플레스 맵 (행정구역별 데이터)</span>
+<span class="code-var">folium</span>.<span class="code-var">Choropleth</span>(
+  <span class="code-var">geo_data</span>=<span class="code-var">geojson</span>, <span class="code-var">data</span>=<span class="code-var">df</span>,
+  <span class="code-var">columns</span>=[<span class="code-str">'구'</span>, <span class="code-str">'값'</span>], <span class="code-var">key_on</span>=<span class="code-str">'feature.properties.name'</span>
+).<span class="code-fn">add_to</span>(<span class="code-var">m</span>)
+        </div>
+        <div style="margin-top:10px;padding:10px 12px;background:#0f2218;border-radius:8px;font-size:11px;color:#86efac;line-height:1.6;border-left:3px solid #22c55e;">
+          <b>인문사회 활용:</b> 범죄 핵스팟 분석 / 부동산 가격 공간패턴 / 의료 접근성 지도 / 도시 불평등 시각화 / 역사적 장소 데이터 지도화
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="pg-num">18 / 20</div>
+</div>
+
+<!-- ========== SLIDE 6-3: 데이터 유형별 분석 플로우 ========== -->
+<div class="slide t6">
+  <div class="slide-header">
+    <div class="slide-num">6-3</div>
+    <div>
+      <div class="slide-title">데이터 유형별 분석 플로우 비교</div>
+      <div class="slide-subtitle">Analysis Flow by Data Type — 설문·리뷰·공간 데이터로 보는 인문사회 분석 전략</div>
+    </div>
+  </div>
+  <div class="slide-body">
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-top:16px;">
+      <div style="background:#0d2137;border-radius:14px;padding:18px;border-top:4px solid #4a9eff;">
+        <div style="font-size:13px;font-weight:700;color:#4a9eff;margin-bottom:12px;text-align:center;">설문조사 데이터</div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="padding:8px 10px;background:#0a1a2e;border-radius:8px;border-left:3px solid #4a9eff;"><div style="font-size:10px;font-weight:700;color:#60a5fa;">수집</div><div style="font-size:10px;opacity:0.7;margin-top:2px;">리커트 쳛도, 선택형, 서술형 혼합 설계. IRB 승인 필수.</div></div>
+          <div style="padding:8px 10px;background:#0a1a2e;border-radius:8px;border-left:3px solid #4a9eff;"><div style="font-size:10px;font-weight:700;color:#60a5fa;">전처리</div><div style="font-size:10px;opacity:0.7;margin-top:2px;">역코딩, 결측 처리, 이상 응답 제거(직선 응답 등)</div></div>
+          <div style="padding:8px 10px;background:#0a1a2e;border-radius:8px;border-left:3px solid #4a9eff;"><div style="font-size:10px;font-weight:700;color:#60a5fa;">분석</div><div style="font-size:10px;opacity:0.7;margin-top:2px;">기술통계 → 신뢰도 분석(Cronbach's α) → 회귀·구조방정식</div></div>
+          <div style="padding:8px 10px;background:#0a1a2e;border-radius:8px;border-left:3px solid #3b82f6;"><div style="font-size:10px;font-weight:700;color:#60a5fa;">시각화</div><div style="font-size:10px;opacity:0.7;margin-top:2px;">리커트 막대차트, 상관행렬 히트맵, 집단 비교 박스플롯</div></div>
+          <div style="padding:8px 10px;background:#1c3a5f;border-radius:8px;margin-top:4px;"><div style="font-size:10px;font-weight:700;color:#93c5fd;">도구: SPSS / R (lavaan) / Python (pingouin)</div></div>
+        </div>
+      </div>
+      <div style="background:#1a0f30;border-radius:14px;padding:18px;border-top:4px solid #a855f7;">
+        <div style="font-size:13px;font-weight:700;color:#a855f7;margin-bottom:12px;text-align:center;">리뷰·SNS 텍스트 데이터</div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="padding:8px 10px;background:#0f0820;border-radius:8px;border-left:3px solid #a855f7;"><div style="font-size:10px;font-weight:700;color:#c084fc;">수집</div><div style="font-size:10px;opacity:0.7;margin-top:2px;">크롤링(BeautifulSoup), API(Twitter/X, Naver), 공개 데이터셋</div></div>
+          <div style="padding:8px 10px;background:#0f0820;border-radius:8px;border-left:3px solid #a855f7;"><div style="font-size:10px;font-weight:700;color:#c084fc;">전처리</div><div style="font-size:10px;opacity:0.7;margin-top:2px;">HTML 태그 제거, 이모지 처리, 중복 제거, 형태소 분석(KoNLPy)</div></div>
+          <div style="padding:8px 10px;background:#0f0820;border-radius:8px;border-left:3px solid #a855f7;"><div style="font-size:10px;font-weight:700;color:#c084fc;">분석</div><div style="font-size:10px;opacity:0.7;margin-top:2px;">TF-IDF 키워드 → 감성분석 → LDA 토픽 모델링 → 시계열 트렌드</div></div>
+          <div style="padding:8px 10px;background:#0f0820;border-radius:8px;border-left:3px solid #9333ea;"><div style="font-size:10px;font-weight:700;color:#c084fc;">시각화</div><div style="font-size:10px;opacity:0.7;margin-top:2px;">워드클라우드, 감성 시계열, 토픽 비율 스택 차트</div></div>
+          <div style="padding:8px 10px;background:#2d1b4e;border-radius:8px;margin-top:4px;"><div style="font-size:10px;font-weight:700;color:#d8b4fe;">도구: KoNLPy / gensim / transformers (KoBERT)</div></div>
+        </div>
+      </div>
+      <div style="background:#0f2218;border-radius:14px;padding:18px;border-top:4px solid #22c55e;">
+        <div style="font-size:13px;font-weight:700;color:#22c55e;margin-bottom:12px;text-align:center;">공간·위치 데이터</div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="padding:8px 10px;background:#0a1a10;border-radius:8px;border-left:3px solid #22c55e;"><div style="font-size:10px;font-weight:700;color:#4ade80;">수집</div><div style="font-size:10px;opacity:0.7;margin-top:2px;">공공데이터포털 GeoJSON, 통계청 SGIS, GPS 로그, OpenStreetMap</div></div>
+          <div style="padding:8px 10px;background:#0a1a10;border-radius:8px;border-left:3px solid #22c55e;"><div style="font-size:10px;font-weight:700;color:#4ade80;">전처리</div><div style="font-size:10px;opacity:0.7;margin-top:2px;">좌표계 통일(EPSG:4326), 공간 조인, 경계 정리, 이상 좌표 제거</div></div>
+          <div style="padding:8px 10px;background:#0a1a10;border-radius:8px;border-left:3px solid #22c55e;"><div style="font-size:10px;font-weight:700;color:#4ade80;">분석</div><div style="font-size:10px;opacity:0.7;margin-top:2px;">클로로플레스 매핑 → 공간 클러스터링 → 접근성 분석 → Moran's I</div></div>
+          <div style="padding:8px 10px;background:#0a1a10;border-radius:8px;border-left:3px solid #16a34a;"><div style="font-size:10px;font-weight:700;color:#4ade80;">시각화</div><div style="font-size:10px;opacity:0.7;margin-top:2px;">Folium 인터랙티브 지도, Plotly 3D 지도, Kepler.gl</div></div>
+          <div style="padding:8px 10px;background:#1b3a2d;border-radius:8px;margin-top:4px;"><div style="font-size:10px;font-weight:700;color:#86efac;">도구: GeoPandas / Folium / PySAL / QGIS</div></div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:16px;padding:14px 18px;background:#1a1a2e;border-radius:10px;border-top:2px solid #06b6d4;">
+      <div style="font-size:11px;font-weight:700;color:#06b6d4;margin-bottom:8px;">데이터 유형 선택 가이드</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
+        <div style="font-size:10px;opacity:0.8;line-height:1.6;"><b style="color:#60a5fa;">설문조사 선택 시:</b> 인과관계 검증, 태도·의견 측정, 가설 검증 연구에 적합. 표본 대표성이 핵심.</div>
+        <div style="font-size:10px;opacity:0.8;line-height:1.6;"><b style="color:#c084fc;">리뷰·텍스트 선택 시:</b> 자연 발생 언어 패턴, 여론 흐름, 대규모 비정형 데이터 분석에 적합.</div>
+        <div style="font-size:10px;opacity:0.8;line-height:1.6;"><b style="color:#4ade80;">공간데이터 선택 시:</b> 지역 격차, 도시 분석, 환경·사회 불평등의 공간적 분포 파악에 적합.</div>
+      </div>
+    </div>
+  </div>
+  <div class="pg-num">19 / 20</div>
+</div>
+
+<!-- ========== SLIDE 7-1: 학습 로드맵 ========== -->
+<div class="slide t1">
+  <div class="slide-header">
+    <div class="slide-num">7-1</div>
+    <div>
+      <div class="slide-title">인문사회계열 데이터사이언스 학습 로드맵</div>
+      <div class="slide-subtitle">Learning Roadmap — 어디서 시작해서 어디로 나아갈 것인가</div>
+    </div>
+  </div>
+  <div class="slide-body">
+    <div style="display:flex;gap:16px;margin-top:16px;">
+      <div style="flex:1;background:linear-gradient(135deg,#1e3a5f,#0d2137);border-radius:14px;padding:18px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;"><div style="width:32px;height:32px;border-radius:50%;background:#4a9eff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;">1</div><div><div style="font-size:13px;font-weight:700;color:#4a9eff;">기초</div></div></div>
+        <div style="display:flex;flex-direction:column;gap:5px;">
+          <div style="font-size:11px;padding:5px 10px;background:#0d2137;border-radius:6px;">기술통계·확률 기초</div>
+          <div style="font-size:11px;padding:5px 10px;background:#0d2137;border-radius:6px;">Python 기초 (변수, 조건, 반복)</div>
+          <div style="font-size:11px;padding:5px 10px;background:#0d2137;border-radius:6px;">Pandas·Matplotlib 입문</div>
+          <div style="font-size:11px;padding:5px 10px;background:#0d2137;border-radius:6px;">공공데이터 EDA 실습</div>
+          <div style="font-size:11px;padding:5px 10px;background:#0d2137;border-radius:6px;">Jupyter/Colab 활용</div>
+        </div>
+        <div style="margin-top:10px;font-size:10px;color:#60a5fa;opacity:0.8;">파이썬 100제, Kaggle Learn</div>
+      </div>
+      <div style="flex:1;background:linear-gradient(135deg,#2d1b4e,#1a0f30);border-radius:14px;padding:18px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;"><div style="width:32px;height:32px;border-radius:50%;background:#a855f7;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;">2</div><div><div style="font-size:13px;font-weight:700;color:#a855f7;">심화</div></div></div>
+        <div style="display:flex;flex-direction:column;gap:5px;">
+          <div style="font-size:11px;padding:5px 10px;background:#1a0f30;border-radius:6px;">회귀·분류 머신러닝</div>
+          <div style="font-size:11px;padding:5px 10px;background:#1a0f30;border-radius:6px;">Scikit-learn 활용</div>
+          <div style="font-size:11px;padding:5px 10px;background:#1a0f30;border-radius:6px;">전처리·특성공학 심화</div>
+          <div style="font-size:11px;padding:5px 10px;background:#1a0f30;border-radius:6px;">모델 평가·교차검증</div>
+          <div style="font-size:11px;padding:5px 10px;background:#1a0f30;border-radius:6px;">텍스트 마이닝 입문</div>
+        </div>
+        <div style="margin-top:10px;font-size:10px;color:#c084fc;opacity:0.8;">Kaggle 대회, 머신러닝 교과서</div>
+      </div>
+      <div style="flex:1;background:linear-gradient(135deg,#1b3a2d,#0f2218);border-radius:14px;padding:18px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;"><div style="width:32px;height:32px;border-radius:50%;background:#22c55e;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;">3</div><div><div style="font-size:13px;font-weight:700;color:#22c55e;">응용</div></div></div>
+        <div style="display:flex;flex-direction:column;gap:5px;">
+          <div style="font-size:11px;padding:5px 10px;background:#0f2218;border-radius:6px;">딥러닝·NLP 입문</div>
+          <div style="font-size:11px;padding:5px 10px;background:#0f2218;border-radius:6px;">LLM API & 바이브코딩</div>
+          <div style="font-size:11px;padding:5px 10px;background:#0f2218;border-radius:6px;">대시보드·시각화 도구</div>
+          <div style="font-size:11px;padding:5px 10px;background:#0f2218;border-radius:6px;">SQL·데이터베이스</div>
+          <div style="font-size:11px;padding:5px 10px;background:#0f2218;border-radius:6px;">도메인 프로젝트 완성</div>
+        </div>
+        <div style="margin-top:10px;font-size:10px;color:#4ade80;opacity:0.8;">실제 데이터 논문 재현</div>
+      </div>
+      <div style="flex:1;background:linear-gradient(135deg,#3a2d1b,#241c0f);border-radius:14px;padding:18px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;"><div style="width:32px;height:32px;border-radius:50%;background:#f59e0b;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;">4</div><div><div style="font-size:13px;font-weight:700;color:#f59e0b;">전문화</div></div></div>
+        <div style="display:flex;flex-direction:column;gap:5px;">
+          <div style="font-size:11px;padding:5px 10px;background:#241c0f;border-radius:6px;">MLOps·데이터 파이프라인</div>
+          <div style="font-size:11px;padding:5px 10px;background:#241c0f;border-radius:6px;">AI 에이전트 설계</div>
+          <div style="font-size:11px;padding:5px 10px;background:#241c0f;border-radius:6px;">AI 윤리·거버넌스</div>
+          <div style="font-size:11px;padding:5px 10px;background:#241c0f;border-radius:6px;">연구·논문 작성</div>
+          <div style="font-size:11px;padding:5px 10px;background:#241c0f;border-radius:6px;">포트폴리오·취업</div>
+        </div>
+        <div style="margin-top:10px;font-size:10px;color:#fbbf24;opacity:0.8;">GitHub 포트폴리오 구축</div>
+      </div>
+    </div>
+    <div class="grid4" style="margin-top:20px;">
+      <div class="card" style="padding:14px;border-top:3px solid #4a9eff;text-align:center;"><div style="font-size:12px;font-weight:700;color:#4a9eff;margin-bottom:4px;">온라인 강의</div><div style="font-size:10px;opacity:0.7;line-height:1.9;"><a href="https://www.coursera.org/specializations/machine-learning-introduction" target="_blank" style="color:#60b4ff;text-decoration:underline;">Coursera (앤드류 응)</a><br><a href="https://www.boostcourse.org/ds112" target="_blank" style="color:#60b4ff;text-decoration:underline;">부스트코스 (네이버)</a><br><a href="https://www.kaggle.com/learn" target="_blank" style="color:#60b4ff;text-decoration:underline;">Kaggle Learn (무료)</a></div></div>
+      <div class="card" style="padding:14px;border-top:3px solid #a855f7;text-align:center;"><div style="font-size:12px;font-weight:700;color:#a855f7;margin-bottom:4px;">추천 도서</div><div style="font-size:10px;opacity:0.7;line-height:1.9;">혼자 공부하는 데이터분석<br>파이썬 머신러닝 완벽가이드<br>데이터 과학을 위한 통계</div></div>
+      <div class="card" style="padding:14px;border-top:3px solid #22c55e;text-align:center;"><div style="font-size:12px;font-weight:700;color:#22c55e;margin-bottom:4px;">데이터 소스</div><div style="font-size:10px;opacity:0.7;line-height:1.9;"><a href="https://www.data.go.kr" target="_blank" style="color:#4ade80;text-decoration:underline;">공공데이터포털</a><br><a href="https://kosis.kr" target="_blank" style="color:#4ade80;text-decoration:underline;">통계청 KOSIS</a><br><a href="https://www.kaggle.com/datasets" target="_blank" style="color:#4ade80;text-decoration:underline;">Kaggle Datasets</a></div></div>
+      <div class="card" style="padding:14px;border-top:3px solid #f59e0b;text-align:center;"><div style="font-size:12px;font-weight:700;color:#f59e0b;margin-bottom:4px;">커뮤니티</div><div style="font-size:10px;opacity:0.7;line-height:1.9;"><a href="https://www.kaggle.com/discussions" target="_blank" style="color:#fbbf24;text-decoration:underline;">Kaggle 토론</a><br><a href="https://dacon.io" target="_blank" style="color:#fbbf24;text-decoration:underline;">데이콘 (한국)</a><br><a href="https://github.com/topics/data-science" target="_blank" style="color:#fbbf24;text-decoration:underline;">GitHub 오픈소스</a></div></div>
+    </div>
+    <div class="card" style="margin-top:16px;padding:20px;background:linear-gradient(135deg,#1e3a5f22,#2d1b4e22);border:1px solid #4a9eff44;">
+      <div style="text-align:center;font-size:15px;font-weight:700;margin-bottom:8px;">"데이터는 새로운 석유가 아니다 — 데이터는 새로운 토양이다"</div>
+      <div style="text-align:center;font-size:12px;opacity:0.6;margin-bottom:16px;">데이터는 그 자체로는 가치가 없다. 경작(분석)하고 씨앨(통찰)을 심어야 열매(가치)가 열린다.</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:4px;">
+        <div style="padding:12px 14px;background:#0d2137;border-radius:10px;border-left:3px solid #4a9eff;">
+          <div style="font-size:11px;font-weight:700;color:#4a9eff;margin-bottom:4px;">현장 기반의 질문</div>
+          <div style="font-size:10px;opacity:0.75;line-height:1.6;">현장 경험과 도메인 지식에서 나오는 <strong>의미있는 질문</strong>이 데이터 분석의 출발점이자 핵심 경쟁력이다.</div>
+        </div>
+        <div style="padding:12px 14px;background:#1a0f30;border-radius:10px;border-left:3px solid #a855f7;">
+          <div style="font-size:11px;font-weight:700;color:#a855f7;margin-bottom:4px;">AI와의 비판적 협업</div>
+          <div style="font-size:10px;opacity:0.75;line-height:1.6;">AI와 협업할 때 필요한 것은 <strong>비판적 사고</strong>와 <strong>컴퓨팅 사고</strong>. 결과를 무조건 믿지 말고 검증하고 해석하라.</div>
+        </div>
+        <div style="padding:12px 14px;background:#1b3a2d;border-radius:10px;border-left:3px solid #22c55e;">
+          <div style="font-size:11px;font-weight:700;color:#22c55e;margin-bottom:4px;">시도 자체가 의미있다</div>
+          <div style="font-size:10px;opacity:0.75;line-height:1.6;">기술이 빠르게 바뀌는 시대, 완벽한 결과보다 <strong>시도하고 배우는 과정</strong>이 이미 가치있는 역량이다.</div>
+        </div>
+      </div>
+      <div style="text-align:center;font-size:11px;opacity:0.4;margin-top:12px;">인문사회계열의 비판적 사고 + 도메인 지식 + 데이터 스킬 = 21세기 핵심 역량</div>
+    </div>
+  </div>
+  <div class="pg-num">20 / 20</div>
+</div>
+
+<div style="text-align:center;padding:24px;opacity:0.4;font-size:12px;">
+  데이터사이언스개론 | 인문사회계열 대학생을 위한 인포그래픽 | 총 20장
+</div>
+</body>
+</html>
